@@ -330,6 +330,11 @@ html[data-theme=dark] .gbtn{background:var(--teal)}
 .tixrow{display:flex;flex-wrap:wrap;gap:6px}
 .tix{font-size:12px;font-weight:600;padding:5px 10px;border-radius:8px;background:#000;color:#fff;position:relative}
 html[data-theme=dark] .tix{background:var(--teal)}
+.tix.win{background:var(--teal);box-shadow:0 0 0 2px var(--teal-d) inset}
+.tix.out{background:var(--line);color:var(--sub)}
+.lt-burn{margin:10px 0 0;font-size:11.5px;color:var(--sub);opacity:.85}
+.tbig.win{outline:2px solid var(--teal)}
+.panel .plead{font-size:11.5px;color:var(--sub);line-height:1.4;margin:6px 0 0}
 .qtybig{display:flex;justify-content:space-between;align-items:center;font-weight:600;font-size:14px}
 .tixbig{display:grid;gap:10px;margin:14px 0 0}
 .tbig{position:relative;border-radius:18px;background:#000;color:#fff;padding:16px 18px;display:grid;grid-template-columns:1fr auto;align-items:center;gap:4px;animation:tin .45s cubic-bezier(.2,.8,.2,1) both;overflow:hidden}
@@ -606,11 +611,11 @@ const T = {
   size:['Объём','Көлемі'], milk:['Молоко','Сүт'], extra:['Добавка','Қосымша'],
   mReg:['Обычное','Кәдімгі'], mOat:['Овсяное','Сұлы'], mLf:['Без лактозы','Лактозасыз'],
   eNone:['Без','Жоқ'], eHoney:['Мёд','Бал'], eSyrup:['Сироп','Шәрбат'], eShot:['Шот','Шот'],
-  withDisc:['со скидкой 10%','10% жеңілдікпен'],
+  withDisc:['со скидкой {d}%','{d}% жеңілдікпен'],
   cart:['Корзина','Себет'], cartEmpty:['В корзине пока пусто','Себет әзірге бос'], cartEmptyS:['Выберите напиток — его можно оплатить здесь и забрать без очереди.','Сусын таңдаңыз — оны осында төлеп, кезексіз алуға болады.'],
   toMenu:['Открыть меню','Мәзірді ашу'], items:['{n} поз.','{n} тауар'], checkout:['К оформлению','Рәсімдеу'],
   when:['Когда забрать','Қашан алу керек'], asap:['Как можно скорее','Мүмкіндігінше тез'], in15:['Через 15 мин','15 мин кейін'], in30:['Через 30 мин','30 мин кейін'],
-  where:['Где забрать','Қай жерден алу'], sum:['Сумма без скидки','Жеңілдіксіз сома'], saved:['Скидка 10% — вы экономите','10% жеңілдік — үнемдейсіз'],
+  where:['Где забрать','Қай жерден алу'], sum:['Сумма без скидки','Жеңілдіксіз сома'], saved:['Скидка {d}% — вы экономите','{d}% жеңілдік — үнемдейсіз'],
   total:['К оплате','Төлеуге'], earn:['Начислим коины','Коин есептейміз'], toLevelBar:['К уровню','Деңгейге'],
   nudgeOpen:['Этот заказ сделает вас Амбассадором','Бұл тапсырыс сізді Амбассадор етеді'],
   
@@ -630,7 +635,7 @@ const T = {
   dist:['{d} от вас','сізден {d}'], unavailable:['Сейчас недоступна для заказа','Қазір тапсырысқа қолжетімсіз'],
   pickHere:['Забирать здесь','Осы жерден алу'], chosen:['Выбрано: {s}','Таңдалды: {s}'],
   rewards:['Подарки','Сыйлықтар'], balance:['Ваш баланс','Сіздің балансыңыз'],
-  rewardsS:['1 ZC за каждые 100 ₸ покупок, не больше 15 ZC за одну покупку. Коины не сгорают, пока вы покупаете хотя бы раз в полгода.','Әр 100 ₸ сатып алуға 1 ZC, бір сатып алуға 15 ZC-тен аспайды. Жарты жылда кемінде бір рет сатып алсаңыз, коиндер күймейді.'],
+  rewardsS:['1 ZC за каждые 100 ₸ покупок, не больше 30 ZC за одну покупку. Коины не сгорают, пока вы покупаете хотя бы раз в полгода.','Әр 100 ₸ сатып алуға 1 ZC, бір сатып алуға 30 ZC-тен аспайды. Жарты жылда кемінде бір рет сатып алсаңыз, коиндер күймейді.'],
   get:['Получить','Алу'], need:['Нужно ещё {n}','Тағы {n} керек'],
   g1:['Добавка к напитку','Сусынға қосымша'], g1s:['Мёд или сироп','Бал немесе шәрбат'],
   g2:['Увеличение объёма','Көлемін үлкейту'], g2s:['С 360 до 450 мл','360-тан 450 мл-ге дейін'],
@@ -640,7 +645,7 @@ const T = {
   confirmTitle:['Обменять {n} ZC?','{n} ZC айырбастау керек пе?'], confirmS:['Подарок появится в «Моих подарках». Его можно показать на кассе или применить к предзаказу. Уровень от обмена не уменьшается.','Сыйлық «Менің сыйлықтарым» бөлімінде пайда болады. Оны кассада көрсетуге немесе алдын ала тапсырысқа қолдануға болады. Айырбас деңгейді азайтпайды.'],
   exchange:['Обменять','Айырбастау'], yourGift:['Ваш подарок','Сіздің сыйлығыңыз'], couponS:['Покажите код на кассе. Действует 30 дней.','Кодты кассада көрсетіңіз. 30 күн жарамды.'],
   myGifts:['Мои подарки','Менің сыйлықтарым'], noGifts:['Полученные подарки появятся здесь','Алынған сыйлықтар осында пайда болады'],
-  clubTitle:['Моя Zebra Coffee','Менің Zebra Coffee'],
+  clubTitle:['Клуб','Клуб'],
   chooseGift:['Выбрать подарок','Сыйлық таңдау'], availNow:['Уже можно получить','Қазір алуға болады'],
   pollAll:['Опрос для всех гостей','Барлық қонаққа арналған сауалнама'], pollZc:['+5 ZC за голос','Дауыс үшін +5 ZC'],
   voteT:['Выбираем зимний напиток','Қысқы сусынды таңдаймыз'], voteS:['Победитель появится в меню в декабре.','Жеңімпаз желтоқсанда мәзірде болады.'],
@@ -660,7 +665,7 @@ const T = {
   rewardFor:['+{n} ZC: {t}','+{n} ZC: {t}'], forOrder:['за заказ','тапсырыс үшін'],
   lotT:['Розыгрыш месяца','Айдың ұтысы'], lotDate:['30 ноября','30 қараша'], lotS:['Покупайте билеты за коины. Чем больше билетов, тем выше шанс.','Коинге билет сатып алыңыз. Билет көп болса, мүмкіндік те жоғары.'],
   lotP1:['Фирменная бутылка Zebra Coffee','Zebra Coffee фирмалық бөтелкесі'], lotP2:['3 сертификата по 5 000 ₸','5 000 ₸-ден 3 сертификат'], lotP3:['Набор мерча Zebra Coffee','Zebra Coffee мерч жиынтығы'],
-  lotPrice:['Билет — 20 ZC','Билет — 20 ZC'], lotMine:['Ваши билеты: {n}','Сіздің билеттеріңіз: {n}'], lotBuy:['Купить билет','Билет сатып алу'], closeAlert:['Закрыть предупреждение','Ескертуді жабу'], inclPrev:['Всё, что есть на уровне «{l}»','«{l}» деңгейіндегінің бәрі'], lotMore:['Купить ещё','Тағы сатып алу'], lotIn:['Вы участвуете','Сіз қатысасыз'], ticketLbl:['Билет','Билет'], lotBuyT:['Купить билеты','Билет сатып алу'], lotQty:['Количество билетов','Билет саны'], lotTotal:['Итого: {n}','Барлығы: {n}'], lotPay:['Купить за {n} ZC','{n} ZC-ге сатып алу'], lotDoneT:['Билеты куплены!','Билеттер сатып алынды!'], lotDoneS:['Итоги розыгрыша — 30 ноября. Пришлём уведомление, если выиграете.','Ұтыс қорытындысы — 30 қараша. Ұтсаңыз, хабарлама жібереміз.'], lotBought:['Билет куплен — удачи!','Билет сатып алынды — сәттілік!'], lotLock:['Розыгрыши открываются с уровня «Кофеман»','Ұтыстар «Кофеман» деңгейінен ашылады'],
+  lotPrice:['Билет — 20 ZC','Билет — 20 ZC'], lotMine:['Ваши билеты: {n}','Сіздің билеттеріңіз: {n}'], lotBuy:['Купить билет','Билет сатып алу'], closeAlert:['Закрыть предупреждение','Ескертуді жабу'], inclPrev:['Всё, что есть на уровне «{l}»','«{l}» деңгейіндегінің бәрі'], lotMore:['Купить ещё','Тағы сатып алу'], lotIn:['Вы участвуете','Сіз қатысасыз'], ticketLbl:['Билет','Билет'], lotBuyT:['Купить билеты','Билет сатып алу'], lotQty:['Количество билетов','Билет саны'], lotTotal:['Итого: {n}','Барлығы: {n}'], lotPay:['Купить за {n} ZC','{n} ZC-ге сатып алу'], lotDoneT:['Билеты куплены!','Билеттер сатып алынды!'], lotDoneS:['Итоги — 30 ноября. Если ваш номер выиграет, вы увидите это здесь и сможете связаться с командой.','Қорытынды — 30 қараша. Нөміріңіз ұтса, мұны осы жерде көріп, командамен байланыса аласыз.'], lotBought:['Билет куплен — удачи!','Билет сатып алынды — сәттілік!'], lotLock:['Розыгрыши открываются с уровня «Кофеман»','Ұтыстар «Кофеман» деңгейінен ашылады'],
   lotNote:['Призовой фонд и правила — для обсуждения с Zebra Coffee.','Жүлде қоры мен ережелер — Zebra Coffee-мен талқылауға.'],
   anketa:['Анкета','Сауалнама'], anketaS:['Расскажите о себе и получите +30 ZC','Өзіңіз туралы айтып, +30 ZC алыңыз'], anketaDone:['Заполнено','Толтырылды'],
   anketaT:['Расскажите о себе','Өзіңіз туралы айтыңыз'], anketaLead:['Все поля необязательные. За заполнение — +30 ZC один раз.','Барлық өріс міндетті емес. Толтырғаныңыз үшін бір рет +30 ZC.'],
@@ -672,19 +677,20 @@ const T = {
   task2:['Пригласите друга','Досыңызды шақырыңыз'], task2s:['+10 ZC, когда друг сделает первый заказ от 500 ₸','Досыңыз 500 ₸-ден бастап алғашқы тапсырыс бергенде +10 ZC'],
   invite:['Пригласить','Шақыру'], linkCopied:['Ссылка-приглашение скопирована','Шақыру сілтемесі көшірілді'],
   myLevel:['Мой уровень','Менің деңгейім'], youAre:['Вы — {l}','Сіз — {l}'],
-  yearZc:['{n} ZC за последние 12 месяцев','Соңғы 12 айда {n} ZC'], validTill:['Уровень действует до 22 октября 2027','Деңгей 2027 жылғы 22 қазанға дейін жарамды'],
-  lvlNote:['Уровень зависит от коинов, полученных за 12 месяцев: 1 ZC за каждые 100 ₸, не больше 15 ZC за покупку. Обмен коинов на подарки уровень не уменьшает. Уровень действует год; если не подтвердить его, вы опуститесь на одну ступень, а не в начало. Скидка растёт до 10%, дальше — приглашения и подарки.','Деңгей 12 айда алынған коиндерге байланысты: әр 100 ₸ үшін 1 ZC, бір сатып алуға 15 ZC-тен аспайды. Коинді сыйлыққа айырбастау деңгейді азайтпайды. Деңгей бір жыл жарамды; оны растамасаңыз, басына емес, бір саты төмен түсесіз. Жеңілдік 10%-ға дейін өседі, одан әрі — шақырулар мен сыйлықтар.'],
+  yearZc:['{n} ZC за год уровня','Деңгей жылында {n} ZC'], validTill:['Уровень действует до 22 октября 2027','Деңгей 2027 жылғы 22 қазанға дейін жарамды'],
+  lvlNote:['Уровень зависит от коинов, полученных за год уровня: 1 ZC за каждые 100 ₸, не больше 30 ZC за покупку. Обмен коинов на подарки уровень не уменьшает. Уровень действует год: чтобы остаться на нём, за этот год нужно снова набрать его порог. Если не подтвердить, вы опуститесь на одну ступень, а не в начало. Скидка растёт до 10% на уровне «Амбассадор», дальше — приглашения, дегустации и подарки.','Деңгей оның жылында алынған коиндерге байланысты: әр 100 ₸ үшін 1 ZC, бір сатып алуға 30 ZC-тен аспайды. Коинді сыйлыққа айырбастау деңгейді азайтпайды. Деңгей бір жыл жарамды: онда қалу үшін осы жыл ішінде оның межелігін қайта жинау керек. Растамасаңыз, басына емес, бір саты төмен түсесіз. Жеңілдік «Амбассадор» деңгейінде 10%-ға дейін өседі, одан әрі — шақырулар, дәм тату және сыйлықтар.'],
   fromX:['от {x} ZC за год','жылына {x} ZC бастап'], cur:['ваш уровень','сіздің деңгейіңіз'],
   history:['История покупок','Сатып алу тарихы'], historyS:['Сумма, скидка, коины и прогресс уровня — в одной строке.','Сома, жеңілдік, коиндер және деңгей прогресі — бір жолда.'],
   hSaved:['скидка {x}','жеңілдік {x}'], hGift:['подарок','сыйлық'],
   program:['Как работает программа','Бағдарлама қалай жұмыс істейді'],
-  q1:['За что я получаю коины?','Коиндерді не үшін аламын?'], a1:['За каждые 100 ₸, оплаченные деньгами, — 1 ZC, но не больше 15 ZC за одну покупку. Дробная часть сохраняется и добавляется к следующей покупке.','Ақшамен төленген әр 100 ₸ үшін — 1 ZC, бірақ бір сатып алуға 15 ZC-тен аспайды. Бөлшек қалдық сақталып, келесі сатып алуға қосылады.'],
-  q2:['Что доступно мне сейчас?','Маған қазір не қолжетімді?'], a2:['Скидка вашего уровня — на каждый заказ. Коины — на подарки из постоянного каталога. Всё, что уже можно получить, — в разделе «Моя Zebra».','Деңгейіңіздің жеңілдігі — әр тапсырысқа. Коиндер — тұрақты каталогтағы сыйлықтарға. Қазір алуға болатынның бәрі — «Менің Zebra» бөлімінде.'],
-  q3:['Как получить следующий уровень?','Келесі деңгейді қалай алуға болады?'], a3:['Уровень зависит от коинов, полученных за последние 12 месяцев. Траты на подарки его не уменьшают. Сколько осталось и что откроется — видно на главной.','Деңгей соңғы 12 айда алынған коиндерге байланысты. Сыйлыққа жұмсау оны азайтпайды. Қанша қалғаны және не ашылатыны басты бетте көрінеді.'],
+  q1:['За что я получаю коины?','Коиндерді не үшін аламын?'], a1:['За каждые 100 ₸, оплаченные деньгами, — 1 ZC, но не больше 30 ZC за одну покупку. Дробная часть сохраняется и добавляется к следующей покупке.','Ақшамен төленген әр 100 ₸ үшін — 1 ZC, бірақ бір сатып алуға 30 ZC-тен аспайды. Бөлшек қалдық сақталып, келесі сатып алуға қосылады.'],
+  q2:['Что доступно мне сейчас?','Маған қазір не қолжетімді?'], a2:['Скидка вашего уровня — на каждый заказ. Коины — на подарки из постоянного каталога. Всё, что уже можно получить, — в разделе «Клуб».','Деңгейіңіздің жеңілдігі — әр тапсырысқа. Коиндер — тұрақты каталогтағы сыйлықтарға. Қазір алуға болатынның бәрі — «Клуб» бөлімінде.'],
+  q3:['Как получить следующий уровень?','Келесі деңгейді қалай алуға болады?'], a3:['Уровень зависит от коинов, полученных за год уровня. Траты на подарки его не уменьшают. Уровень действует год: чтобы сохранить его, за этот год нужно снова набрать порог. Сколько осталось и что откроется — видно на главной.','Деңгей оның жылында алынған коиндерге байланысты. Сыйлыққа жұмсау оны азайтпайды. Деңгей бір жыл жарамды: оны сақтау үшін осы жыл ішінде межелікті қайта жинау керек. Қанша қалғаны және не ашылатыны басты бетте көрінеді.'],
   q4:['Что стало с XP и коинами?','XP мен коиндер не болды?'], a4:['XP стали прогрессом уровня — второй валюты больше нет. Коины на балансе перенесены 1:1, уровень и скидка сохранены на 12 месяцев.','XP деңгей прогресіне айналды — екінші валюта енді жоқ. Балансыңыздағы коиндер 1:1 көшірілді, деңгей мен жеңілдік 12 айға сақталды.'],
   whatChanged:['Что изменилось','Не өзгерді'],
   migT:['Программа стала проще','Бағдарлама қарапайым болды'], migS:['Ничего из накопленного не потерялось. Вот что изменилось для вас:','Жинағаныңыздың ешқайсысы жоғалмады. Сіз үшін не өзгерді:'],
-  migLvl:['XP стали прогрессом уровня — одна валюта вместо двух','XP деңгей прогресіне айналды — екі валютаның орнына біреу'], migZc:['баланс коинов перенесён 1:1','коин балансы 1:1 көшірілді'], migDisc:['уровень «Кофеман» и скидка сохранены на 12 месяцев','«Кофеман» деңгейі мен жеңілдік 12 айға сақталды'],
+  migLvl:['XP стали прогрессом уровня — одна валюта вместо двух','XP деңгей прогресіне айналды — екі валютаның орнына біреу'], migZc:['баланс коинов перенесён 1:1','коин балансы 1:1 көшірілді'], migDisc:['уровень «{l}» и скидка 10% сохранены на 12 месяцев','«{l}» деңгейі мен 10% жеңілдік 12 айға сақталды'],
+  migGrand:['уровень «{l}» сохранён, а прежняя скидка 10% действует ещё 12 месяцев','«{l}» деңгейі сақталды, бұрынғы 10% жеңілдік тағы 12 ай жарамды'],
   migNew:['Новое: постоянный каталог подарков, задания и дни дегустации для амбассадоров.','Жаңа: тұрақты сыйлықтар каталогы, тапсырмалар және амбассадорларға дәм тату күндері.'],
   purchases:['покупок','сатып алу'],
   notif:['Уведомления','Хабарламалар'], nImp:['Важное о любимой кофейне','Сүйікті кофехана туралы маңызды'], nImpS:['Закрытие, нет воды, смена часов. Никакой рекламы.','Жабылу, су жоқ, жұмыс уақытының өзгеруі. Жарнамасыз.'],
@@ -698,14 +704,24 @@ const T = {
   widgetOk:['работает до 22:00','22:00-ге дейін ашық'], widgetBad:['нет воды, напитки не готовим','су жоқ, сусын дайындалмайды'],
   welcome:['Вы — Амбассадор','Сіз — Амбассадорсыз'], welcomeS:['В дни запуска новинок пробная порция для вас бесплатна. Ближайшие дни дегустации — 14–16 ноября.','Жаңа өнім шыққан күндері дәм тату порциясы сізге тегін. Жақын дәм тату күндері — 14–16 қараша.'],
   toClubBtn:['Посмотреть','Қарау'], later:['Позже','Кейінірек'],
+  confirmNeed:['Чтобы остаться на уровне, до 22 октября 2027 нужно снова набрать {n} ZC','Деңгейде қалу үшін 2027 жылғы 22 қазанға дейін {n} ZC қайта жинау керек'],
+  confirmGap:['осталось набрать ещё {n} ZC','тағы {n} ZC жинау керек'],
+  confirmDone:['порог уже набран, уровень подтверждён','межелік жиналды, деңгей расталды'],
+  lotRes:['Итоги розыгрыша','Ұтыс қорытындысы'], lotWon:['Выиграл','Ұтып алды'], lotPlayed:['Сыграл','Ойнады'],
+  lotWinT:['Ваш билет выиграл!','Сіздің билетіңіз ұтты!'], lotWinS:['Поздравляем! Приз ваш — договоритесь с командой, где и когда его забрать.','Құттықтаймыз! Жүлде сіздікі — оны қайдан және қашан алатыныңызды командамен келісіңіз.'],
+  lotYourPrize:['Ваш приз','Сіздің жүлдеңіз'], lotContact:['Связаться с командой','Командамен байланысу'],
+  lotChatT:['Чат с командой Zebra','Zebra командасымен чат'], lotChatS:['Здесь вы договоритесь с командой Zebra Coffee, где и когда забрать приз.','Zebra Coffee командасымен жүлдені қайдан және қашан алатыныңызды осы жерде келісесіз.'],
+  lotChatStub:['В прототипе чат не работает. В приложении здесь будет переписка с командой, которая выдаёт призы.','Прототипте чат жұмыс істемейді. Қосымшада мұнда жүлде беретін командамен хат алмасу болады.'],
+  lotBurn:['После розыгрыша билеты сгорают, в следующем месяце — новый.','Ұтыстан кейін билеттер күйеді, келесі айда — жаңасы.'],
+  lotPushT:['Итоги розыгрыша','Ұтыс қорытындысы'], lotPushS:['Ваш билет № {n} выиграл: {p}','Сіздің № {n} билетіңіз ұтты: {p}'],
   justNow:['только что','жаңа ғана'],
-  capNote:['За одну покупку начисляем не больше 15 ZC','Бір сатып алуға 15 ZC-тен аспайды'],
+  capNote:['За одну покупку начисляем не больше 30 ZC','Бір сатып алуға 30 ZC-тен аспайды'],
 };
 const LV = [
-  {n:['Новичок','Жаңа қонақ'],from:0,d:0,p:[['Коины за каждую покупку: 1 ZC за 100 ₸, до 15 ZC','Әр сатып алуға коин: 100 ₸ үшін 1 ZC, 15 ZC-ке дейін'],['Подарок после первой покупки в приложении','Қосымшадағы алғашқы сатып алудан кейін сыйлық']]},
+  {n:['Новичок','Жаңа қонақ'],from:0,d:0,p:[['Коины за каждую покупку: 1 ZC за 100 ₸, до 30 ZC','Әр сатып алуға коин: 100 ₸ үшін 1 ZC, 30 ZC-ке дейін'],['Подарок после первой покупки в приложении','Қосымшадағы алғашқы сатып алудан кейін сыйлық']]},
   {n:['Постоянник','Тұрақты қонақ'],from:200,d:5,p:[['Скидка 5%','5% жеңілдік'],['Подарок в день рождения','Туған күнге сыйлық'],['Коины за задания','Тапсырмалар үшін коин']]},
-  {n:['Кофеман','Кофеман'],from:600,d:10,p:[['Скидка 10%','10% жеңілдік'],['Подарок в годовщину с Zebra Coffee','Zebra Coffee-мен мерейтойға сыйлық'],['Розыгрыши месяца: билеты за коины','Ай сайынғы ұтыс: коинге билет']]},
-  {n:['Амбассадор','Амбассадор'],from:2000,d:10,p:[['Дни дегустации: пробная порция новинок бесплатно','Дәм тату күндері: жаңа өнімнің порциясы тегін'],['Другу — добавка в подарок за ваше приглашение','Шақыруыңыз үшін досыңызға қосымша сыйға']]},
+  {n:['Кофеман','Кофеман'],from:600,d:7,p:[['Скидка 7%','7% жеңілдік'],['Подарок в годовщину с Zebra Coffee','Zebra Coffee-мен мерейтойға сыйлық'],['Розыгрыши месяца: билеты за коины','Ай сайынғы ұтыс: коинге билет']]},
+  {n:['Амбассадор','Амбассадор'],from:2000,d:10,p:[['Скидка 10%','10% жеңілдік'],['Дни дегустации: пробная порция новинок бесплатно','Дәм тату күндері: жаңа өнімнің порциясы тегін'],['Другу — добавка в подарок за ваше приглашение','Шақыруыңыз үшін досыңызға қосымша сыйға']]},
   {n:['Свой','Өзіміздікі'],from:3500,d:10,p:[['Закрытые дегустации до запуска','Іске қосылғанға дейін жабық дәм тату'],['Голос в выборе финального рецепта','Соңғы рецептті таңдауға дауыс']]},
   {n:['Легенда ZEBRACOFFEE','ZEBRACOFFEE аңызы'],from:6000,d:10,p:[['Создаём напиток сезона вместе','Маусым сусынын бірге жасаймыз'],['Подарок от Zebra Coffee раз в год','Жылына бір рет Zebra Coffee-ден сыйлық']]},
 ];
@@ -745,7 +761,7 @@ const SHOPS = [
   {n:'Туран, 37',d:'2,4 км',h:'21:00'},
 ];
 const GIFTS = [{k:'g1',c:40,ic:'drop'},{k:'g2',c:60,ic:'cup'},{k:'g3',c:220,ic:'cup'},{k:'g4',c:350,ic:'star'},{k:'g5',c:1000,ic:'bottle'}];
-const DISC = 0.10, AMB = 2000, ZC_CAP = 15;
+const DISC = 0.10, AMB = 2000, ZC_CAP = 30;
 const FREQ = {americano:38,cappuccino:17,honey:6,espresso:4};
 const ART = {};
 function artSvg(p){ if(ART[p.id]) return ART[p.id]; const a=p.art, c=a.c, cold=p.temp==='cold'; let d='';
@@ -771,15 +787,15 @@ const pimg = p => p.img ? A[p.img] : artSvg(p);
 const store = { get(k,d){try{const v=localStorage.getItem('zebra2-'+k);return v===null?d:JSON.parse(v)}catch(e){return d}}, set(k,v){try{localStorage.setItem('zebra2-'+k,JSON.stringify(v))}catch(e){}} };
 const S = {
   lang: store.get('lang','ru'), theme: store.get('theme','light'), scenario:'normal',
-  page:'home', stack:[], basket:[], balance:1990, earned:1970, claimed:[], order:null, signed:false,
-  myShop:0, pickShop:0, tickets:0, anketa:false, tasks:{tk1:false,tk2:false,tk3:false}, when:'asap', voted:null, votes:[412,286,351,198],
+  page:'home', stack:[], basket:[], balance:2110, earned:2090, claimed:[], order:null, signed:false, guest:'amb',
+  myShop:0, pickShop:0, tickets:0, lotDone:false, anketa:false, tasks:{tk1:false,tk2:false,tk3:false}, when:'asap', voted:null, votes:[412,286,351,198],
   notif:{imp:true,news:false,order:true}, phrase:0,
   history:[
     {d:['21 октября, 16:46','21 қазан, 16:46'],s:0,i:['Американо 360 мл','Американо 360 мл'],p:801,sv:89},
     {d:['21 октября, 13:41','21 қазан, 13:41'],s:0,i:['Капучино 360 мл','Капучино 360 мл'],p:891,sv:99},
     {d:['19 октября, 14:13','19 қазан, 14:13'],s:1,i:['Латте с мёдом, Эспрессо','Бал қосылған латте, Эспрессо'],p:1782,sv:198},
     {d:['18 октября, 16:09','18 қазан, 16:09'],s:0,i:['Американо 360 мл','Американо 360 мл'],p:801,sv:89},
-    {d:['17 октября, 09:10','17 қазан, 09:10'],s:0,i:['Добавка к напитку за 30 ZC','30 ZC-ге сусынға қосымша'],p:0,sv:0,gift:true},
+    {d:['17 октября, 09:10','17 қазан, 09:10'],s:0,i:['Добавка к напитку за 40 ZC','40 ZC-ге сусынға қосымша'],p:0,sv:0,gift:true},
   ]
 };
 const L = () => S.lang==='kk'?1:0;
@@ -788,6 +804,9 @@ const nm = o => o[L()];
 const money = x => Math.round(x).toLocaleString('ru-RU').replace(/,/g,' ') + ' ₸';
 const num = x => Math.round(x).toLocaleString('ru-RU');
 const lvlIdx = sp => LV.reduce((a,l,i)=>sp>=l.from?i:a,0);
+const myLvl = () => LV[lvlIdx(S.earned)];
+const discPct = () => myLvl().d;
+const disc = () => discPct()/100;
 const zc = x => num(Math.floor(x+1e-9));
 const visits = z => Math.max(1,Math.ceil(z/10));
 const plPok = n => { const a=n%10,b=n%100; return (a===1&&b!==11)?'покупка':(a>=2&&a<=4&&(b<12||b>14))?'покупки':'покупок'; };
@@ -821,7 +840,7 @@ const ic = (k, sz=22, fill=false) => `<svg width="${sz}" height="${sz}" viewBox=
 /* ================= helpers ================= */
 const $ = id => document.getElementById(id);
 const pr = p => p.base; // full price for 360 ml
-function linePrice(it){ const p=PRODUCTS.find(x=>x.id===it.id); let full=p.base+(it.size===450?250:0)+({reg:0,oat:300,lf:200}[it.milk||'reg'])+(p.noEx?0:{none:0,honey:200,syrup:200,shot:250}[it.extra||'none']); return {full, paid:Math.round(full*(1-DISC))}; }
+function linePrice(it){ const p=PRODUCTS.find(x=>x.id===it.id); let full=p.base+(it.size===450?250:0)+({reg:0,oat:300,lf:200}[it.milk||'reg'])+(p.noEx?0:{none:0,honey:200,syrup:200,shot:250}[it.extra||'none']); return {full, paid:Math.round(full*(1-disc()))}; }
 function cartTotals(){ let full=0,paid=0,count=0; S.basket.forEach(it=>{const l=linePrice(it);full+=l.full*it.q;paid+=l.paid*it.q;count+=it.q}); const raw=paid/100, zcx=Math.min(raw,ZC_CAP); return {full,paid,count,saved:full-paid,zc:Math.floor(zcx),zcx,capped:raw>ZC_CAP}; }
 function shopOk(i){ return !(S.scenario==='water' && i===0); }
 function nearestOk(){ return SHOPS.findIndex((s,i)=>shopOk(i)); }
@@ -890,14 +909,14 @@ cart(){
   const inCart=new Set(S.basket.map(b=>b.id));
   const uId=Object.entries(FREQ).sort((a,b)=>b[1]-a[1]).map(x=>x[0]).find(id=>!inCart.has(id));
   const up=uId?PRODUCTS.find(p=>p.id===uId):null;
-  const usual=up?`<div class="usual"><img src="${pimg(up)}" alt=""><span class="grow"><small>${t('usual')}</small><b>${nm(up.n)}${up.noSize?'':' 360 мл'}</b><span>${money(up.base*(1-DISC))}</span></span><button class="plus" onclick="quickAdd('${up.id}',event)" aria-label="${t('addShort')}: ${esc(nm(up.n))}">+</button></div>`:'';
+  const usual=up?`<div class="usual"><img src="${pimg(up)}" alt=""><span class="grow"><small>${t('usual')}</small><b>${nm(up.n)}${up.noSize?'':' 360 мл'}</b><span>${money(up.base*(1-disc()))}</span></span><button class="plus" onclick="quickAdd('${up.id}',event)" aria-label="${t('addShort')}: ${esc(nm(up.n))}">+</button></div>`:'';
   const ok=shopOk(S.pickShop);
   return subhead(t('cart'))+`<div class="list">${S.basket.map((it,i)=>{const p=PRODUCTS.find(x=>x.id===it.id),l=linePrice(it);return `<div class="li"><img src="${pimg(p)}" alt=""><div class="grow"><b>${nm(p.n)}</b><small>${optText(it)}</small><small>${l.full?`<b style="color:var(--ink)">${money(l.paid)}</b> <s>${money(l.full)}</s>`:`<b style="color:var(--teal-d)">${t('free')}</b>`}</small></div><div class="qty"><button onclick="qty(${i},-1)" aria-label="−">−</button>${it.q}<button onclick="qty(${i},1)" aria-label="+">+</button></div></div>`}).join('')}</div>
   <div class="label">${t('where')}</div>
   <div class="list"><button class="li" onclick="go('shops')">${ic('pin',20)}<span class="grow"><b>${SHOPS[S.pickShop].n}</b><small>${ok?t('openUntil',{t:SHOPS[S.pickShop].h}):t('unavailable')}</small></span><span class="chev">›</span></button></div>
   <div class="label">${t('when')}</div>
   <div class="timechips">${[['asap','asap'],['15','in15'],['30','in30']].map(([k,l])=>`<button aria-pressed="${S.when===k}" onclick="S.when='${k}';render()">${t(l)}</button>`).join('')}</div>
-  <div class="box"><div class="kv"><span>${t('sum')}</span><span>${money(c.full)}</span></div>${c.saved?`<div class="kv"><span>${t('saved')}</span><span class="good">−${money(c.saved)}</span></div>`:''}${c.zc?`<div class="kv"><span>${t('earn')}</span><span class="zcv"><span class="coin">Z</span>+${c.zc} ZC</span></div>`:''}<div class="kv total"><span>${t('total')}</span><span>${money(c.paid)}</span></div>${hint}</div>
+  <div class="box"><div class="kv"><span>${t('sum')}</span><span>${money(c.full)}</span></div>${c.saved?`<div class="kv"><span>${t('saved',{d:discPct()})}</span><span class="good">−${money(c.saved)}</span></div>`:''}${c.zc?`<div class="kv"><span>${t('earn')}</span><span class="zcv"><span class="coin">Z</span>+${c.zc} ZC</span></div>`:''}<div class="kv total"><span>${t('total')}</span><span>${money(c.paid)}</span></div>${hint}</div>
   ${usual}
   <div class="btnrow"><button class="primary" ${ok?'':'disabled'} onclick="${c.paid?'openPay()':'doPay()'}">${c.paid?t('pay',{x:money(c.paid)}):t('payFree')}</button></div>`;
 },
@@ -919,19 +938,21 @@ club(){
   const invite = amb ? `<div class="invite"><img class="invimg" src="${A.c_tasting_days}" alt=""><div style="position:relative"><div class="itag">${t('inviteT')}</div><h3>${t('tasteT')}</h3><div class="chipsrow" style="margin-top:8px"><span class="chip inv">${t('tasteD')}</span><span class="chip inv">${t('tasteV')}</span></div><p>${t('tasteW')}</p>${S.signed?`<span class="pill ready" style="margin-top:12px">✓ ${t('signed')}</span>`:`<button class="primary" style="margin-top:12px;background:#fff;color:#000" onclick="S.signed=true;addToBasket({id:'taste',q:1});toast(t('signedToast'));render()">${t('signUp')}</button>`}</div></div>` : '';
   const nextCard = ni ? `<div class="perk locked"><span class="pi2">${ic('lock',18)}</span><span class="grow"><b>${t('perksNext',{l:nm(ni.next.n)})}</b><small>${t('gapZc',{n:num(ni.gap)})}</small>${plistFull(lvlIdx(ni.next.from))}</span></div>` : '';
   const task=(k,z,done)=>`<div class="tile task2"><div class="grow"><h3>${t(k)}</h3><p>${t(k+'s')}</p><div class="chipsrow" style="margin-top:8px"><span class="chip zc"><span class="coin">Z</span>+${z} ZC</span>${done?`<span class="chip ok">✓ ${t('done')}</span>`:''}</div></div></div>`;
-  const tasks = li>=1 ? task('tk1',20,S.tasks.tk1)+task('tk2',15,S.tasks.tk2)+task('tk3',10,S.tasks.tk3)+`<div class="tile task2"><div class="task"><div class="grow"><h3>${t('tk4')}</h3><p>${t('tk4s')}</p><div class="chipsrow" style="margin-top:8px"><span class="chip zc"><span class="coin">Z</span>+10 ZC</span></div></div><button class="gbtn" onclick="toast(t('linkCopied'))">${t('invite')}</button></div></div>` : `<p class="pad lockline">${ic('lock',14)} ${t('tasksLock')}</p>`;
-  const tix=S.ticketNos||[];
-  const lottery = li>=2 ? `<section class="lottery${tix.length?' in':''}"><div class="lt-head"><span><b>${t('lotT')}</b><small>${t('lotDate')}</small></span>${tix.length?`<span class="chip ok">✓ ${t('lotIn')}</span>`:`<span class="chip zc"><span class="coin">Z</span>${t('lotPrice')}</span>`}</div><p class="lt-s">${t('lotS')}</p><ul class="prizes">${['lotP1','lotP2','lotP3'].map(k=>`<li>${ic('gift',16)} ${t(k)}</li>`).join('')}</ul>${tix.length?`<div class="mytix"><small>${t('lotMine',{n:tix.length})}</small><div class="tixrow">${tix.map(n=>`<span class="tix">${t('ticketLbl')} № ${n}</span>`).join('')}</div></div>`:''}<div class="lt-foot"><span>${tix.length?'':t('lotMine',{n:0})}</span><button class="gbtn" ${S.balance>=20?'':'disabled'} onclick="openLottery()">${tix.length?t('lotMore'):t('lotBuy')}</button></div></section>` : `<p class="pad lockline">${ic('lock',14)} ${t('lotLock')}</p>`;
+  const tasks = li>=1 ? task('tk1',20,S.tasks.tk1)+task('tk2',15,S.tasks.tk2)+task('tk3',10,S.tasks.tk3) : `<p class="pad lockline">${ic('lock',14)} ${t('tasksLock')}</p>`;
+  const friend = `<div class="tile task2"><div class="task"><div class="grow"><h3>${t('tk4')}</h3><p>${t('tk4s')}</p><div class="chipsrow" style="margin-top:8px"><span class="chip zc"><span class="coin">Z</span>+10 ZC</span></div></div><button class="gbtn" onclick="toast(t('linkCopied'))">${t('invite')}</button></div></div>`;
+  const tix=S.ticketNos||[]; const lotFin=S.lotDone&&tix.length>0, winNo=lotFin?tix[0]:null;
+  const lottery = li>=2 ? `<section class="lottery${tix.length?' in':''}"><div class="lt-head"><span><b>${t('lotT')}</b><small>${lotFin?t('lotRes'):t('lotDate')}</small></span>${lotFin?`<span class="chip ok">✓ ${t('lotWon')}</span>`:tix.length?`<span class="chip ok">✓ ${t('lotIn')}</span>`:`<span class="chip zc"><span class="coin">Z</span>${t('lotPrice')}</span>`}</div><p class="lt-s">${lotFin?t('lotWinS'):t('lotS')}</p><ul class="prizes">${['lotP1','lotP2','lotP3'].map(k=>`<li>${ic('gift',16)} ${t(k)}</li>`).join('')}</ul>${tix.length?`<div class="mytix"><small>${lotFin?t('lotRes'):t('lotMine',{n:tix.length})}</small><div class="tixrow">${tix.map(x=>`<span class="tix${lotFin?(x===winNo?' win':' out'):''}">${t('ticketLbl')} № ${x}${lotFin?' · '+(x===winNo?t('lotWon'):t('lotPlayed')):''}</span>`).join('')}</div></div>`:''}<div class="lt-foot"><span>${tix.length?'':t('lotMine',{n:0})}</span>${lotFin?`<button class="gbtn" onclick="openWin()">${t('lotContact')}</button>`:`<button class="gbtn" ${S.balance>=20?'':'disabled'} onclick="openLottery()">${tix.length?t('lotMore'):t('lotBuy')}</button>`}</div><p class="lt-burn">${t('lotBurn')}</p></section>` : `<p class="pad lockline">${ic('lock',14)} ${t('lotLock')}</p>`;
   return `${tophead(t('clubTitle'))}
   <section class="clubcard" style="min-height:0">${stripes(.8)}<p style="margin:0 0 2px">${t('balance')}</p><h2 style="font-size:34px"><span id="zcBal2">${zc(S.balance)}</span> ZC</h2><p>${t('balanceS')}</p><button class="primary" style="margin-top:14px;max-width:200px;position:relative;padding:12px" onclick="go('rewards')">${t('chooseGift')}</button></section>
-  <section class="poll vote" aria-label="${t('voteT')}"><div class="ornament"></div><div style="position:relative"><div class="chipsrow"><span class="ptag">${t('pollAll')}</span><span class="ptag light">${t('pollZc')}</span></div><h2>${t('voteT')}</h2><p>${S.voted!==null?t('votedNote'):t('voteS')}</p><img class="pollimg" src="${A.c_poll_winter}" alt="">${['v1','v2','v3','v4'].map((k,i)=>{const pc=Math.round(S.votes[i]/total*100);return `<button class="${S.voted===i?'mine':''}" onclick="vote(${i})" ${S.voted!==null?'aria-disabled="true"':''}><span class="fill" data-vw="${pc}%" style="width:${S.voted!==null?pc+'%':'0'}"></span><span><span>${t(k)}</span><span>${S.voted!==null?pc+'%':''}</span></span></button>`}).join('')}</div></section>
   <div class="sect"><h2>${t('perksT')}</h2></div>
   <div class="perk"><span class="pi2 on">${ic('star',18,true)}</span><span class="grow"><b>${t('nowYou')}: ${nm(lv.n)}</b>${plistFull(li)}</span></div>
   ${invite}${nextCard}
   <div class="btnrow"><button class="ghost" onclick="go('level')">${t('allPerks')} ›</button></div>
-  <div style="height:10px"></div>${lottery}
+  <section class="poll vote" aria-label="${t('voteT')}"><div class="ornament"></div><div style="position:relative"><div class="chipsrow"><span class="ptag">${t('pollAll')}</span><span class="ptag light">${t('pollZc')}</span></div><h2>${t('voteT')}</h2><p>${S.voted!==null?t('votedNote'):t('voteS')}</p><img class="pollimg" src="${A.c_poll_winter}" alt="">${['v1','v2','v3','v4'].map((k,i)=>{const pc=Math.round(S.votes[i]/total*100);return `<button class="${S.voted===i?'mine':''}" onclick="vote(${i})" ${S.voted!==null?'aria-disabled="true"':''}><span class="fill" data-vw="${pc}%" style="width:${S.voted!==null?pc+'%':'0'}"></span><span><span>${t(k)}</span><span>${S.voted!==null?pc+'%':''}</span></span></button>`}).join('')}</div></section>
   <div class="sect"><h2>${t('tasksT')}</h2></div>
-  ${tasks}`;
+  ${tasks}
+  <div style="height:10px"></div>${lottery}
+  <div style="height:10px"></div>${friend}`;
 },
 rewards(){
   return subhead(t('rewards'))+`<section class="clubcard" style="min-height:0">${stripes(.6)}<p style="margin:0 0 4px">${t('balance')}</p><h2 style="font-size:34px"><span id="zcBal2">${zc(S.balance)}</span> ZC</h2><p>${t('rewardsS')}</p></section>
@@ -941,7 +962,7 @@ rewards(){
 },
 level(){
   const li=lvlIdx(S.earned), ni=nextLevelInfo();
-  return subhead(t('myLevel'))+`<section class="clubcard" style="min-height:0">${stripes(.7)}<h2>${nm(LV[li].n)}</h2><div class="chipsrow" style="margin:8px 0 6px;position:relative"><span class="chip inv">${t('discTag',{d:LV[li].d})}</span><span class="chip inv">${zc(S.earned)} ZC</span></div><p>${t('yearZc',{n:zc(S.earned)})}<br>${t('validTill')}</p>${ni?`<div class="bar"><i data-w="${ni.pct}%"></i></div><p style="margin-top:0">${t('toLevel',{l:nm(ni.next.n)})}: ${(g=>g.charAt(0).toLowerCase()+g.slice(1))(t('gapZc',{n:num(ni.gap)}))}</p>`:''}</section>
+  return subhead(t('myLevel'))+`<section class="clubcard" style="min-height:0">${stripes(.7)}<h2>${nm(LV[li].n)}</h2><div class="chipsrow" style="margin:8px 0 6px;position:relative"><span class="chip inv">${t('discTag',{d:LV[li].d})}</span><span class="chip inv">${zc(S.earned)} ZC</span></div><p>${t('yearZc',{n:zc(S.earned)})}<br>${t('validTill')}${LV[li].from?`<br>${t('confirmNeed',{n:num(LV[li].from)})} — ${S.earned>=LV[li].from?t('confirmDone'):t('confirmGap',{n:num(Math.ceil(LV[li].from-S.earned-1e-9))})}`:''}</p>${ni?`<div class="bar"><i data-w="${ni.pct}%"></i></div><p style="margin-top:0">${t('toLevel',{l:nm(ni.next.n)})}: ${(g=>g.charAt(0).toLowerCase()+g.slice(1))(t('gapZc',{n:num(ni.gap)}))}</p>`:''}</section>
   <div class="list">${LV.map((l,i)=>`<div class="lvl ${i<li?'got':i===li?'cur':'locked'}"><span class="ic">${i<=li?'✓':ic('lock',16)}</span><span style="flex:1;min-width:0"><b>${nm(l.n)}</b>${i===li?` <span class="chip mini">${t('levelTag')}</span>`:''}<small>${t('fromX',{x:num(l.from)})}</small>${plistFull(i)}</span></div>`).join('')}</div>
   <p class="pad" style="color:var(--sub);font-size:12.5px;margin-top:14px">${t('lvlNote')}</p>`;
 },
@@ -976,7 +997,7 @@ function optText(it){ const p=PRODUCTS.find(x=>x.id===it.id); const a=[]; if(!p.
 function catalogHtml(){
   const q=(S.q||'').toLowerCase().trim(), cat=S.cat||'all';
   const vis=PRODUCTS.filter(p=>!p.hidden);
-  const tile=p=>`<button class="prod" onclick="openProduct('${p.id}')" style="position:relative">${p.isNew?`<span class="newtag">${t('newTag')}</span>`:''}<img src="${pimg(p)}" alt="" data-pimg="${p.id}"><b>${nm(p.n)}</b><span class="pr"><span>${money(p.base*(1-DISC))}</span><span class="plus" aria-hidden="true">+</span></span></button>`;
+  const tile=p=>`<button class="prod" onclick="openProduct('${p.id}')" style="position:relative">${p.isNew?`<span class="newtag">${t('newTag')}</span>`:''}<img src="${pimg(p)}" alt="" data-pimg="${p.id}"><b>${nm(p.n)}</b><span class="pr"><span>${money(p.base*(1-disc()))}</span><span class="plus" aria-hidden="true">+</span></span></button>`;
   const grid=list=>`<div class="grid">${list.map(tile).join('')}</div>`;
   const F={all:()=>true,hot:p=>p.temp==='hot',cold:p=>p.temp==='cold',coffee:p=>p.type==='coffee',tea:p=>p.type==='tea',kids:p=>p.type==='kids'};
   if(q){ const list=vis.filter(p=>nm(p.n).toLowerCase().includes(q)); return list.length?grid(list):`<div class="empty">${t('nothing')}</div>`; }
@@ -999,7 +1020,7 @@ const PSEL={};
 function openProduct(id){
   const p=PRODUCTS.find(x=>x.id===id); PSEL.it={id,size:360,milk:'reg',extra:'none',q:1};
   const segs=(key,opts)=>`<div class="seg">${opts.map(([v,l,add])=>`<button aria-pressed="${PSEL.it[key]===v}" onclick="PSEL.it['${key}']=${typeof v==='number'?v:`'${v}'`};refreshProduct()">${l}${add?`<small>+${add} ₸</small>`:''}</button>`).join('')}</div>`;
-  window.refreshProduct=()=>{ const l=linePrice(PSEL.it); $('popts').innerHTML=(p.noSize?'':`<div class="opt"><div class="ol">${t('size')}</div>${segs('size',[[360,'360 мл'],[450,'450 мл',250]])}</div>`)+(p.milk?`<div class="opt"><div class="ol">${t('milk')}</div>${segs('milk',[['reg',t('mReg')],['oat',t('mOat'),300],['lf',t('mLf'),200]])}</div>`:'')+(p.noEx?'':`<div class="opt"><div class="ol">${t('extra')}</div>${segs('extra',p.type==='tea'?[['none',t('eNone')],['honey',t('eHoney'),200],['syrup',t('eSyrup'),200]]:[['none',t('eNone')],['honey',t('eHoney'),200],['syrup',t('eSyrup'),200],['shot',t('eShot'),250]])}</div>`); $('padd').innerHTML=t('add',{p:money(l.paid)}); $('pprice').innerHTML=`<b style="font-size:22px;font-weight:600">${money(l.paid)}</b> <s style="color:var(--sub)">${money(l.full)}</s> <span style="color:var(--sub);font-size:12px">${t('withDisc')}</span>`; };
+  window.refreshProduct=()=>{ const l=linePrice(PSEL.it); $('popts').innerHTML=(p.noSize?'':`<div class="opt"><div class="ol">${t('size')}</div>${segs('size',[[360,'360 мл'],[450,'450 мл',250]])}</div>`)+(p.milk?`<div class="opt"><div class="ol">${t('milk')}</div>${segs('milk',[['reg',t('mReg')],['oat',t('mOat'),300],['lf',t('mLf'),200]])}</div>`:'')+(p.noEx?'':`<div class="opt"><div class="ol">${t('extra')}</div>${segs('extra',p.type==='tea'?[['none',t('eNone')],['honey',t('eHoney'),200],['syrup',t('eSyrup'),200]]:[['none',t('eNone')],['honey',t('eHoney'),200],['syrup',t('eSyrup'),200],['shot',t('eShot'),250]])}</div>`); $('padd').innerHTML=t('add',{p:money(l.paid)}); $('pprice').innerHTML=`<b style="font-size:22px;font-weight:600">${money(l.paid)}</b> <s style="color:var(--sub)">${money(l.full)}</s> <span style="color:var(--sub);font-size:12px">${t('withDisc',{d:discPct()})}</span>`; };
   sheet(`<img class="pimg" id="pimgBig" src="${pimg(p)}" alt="${esc(nm(p.n))}"><h2>${nm(p.n)}</h2><p class="sub">${nm(p.d)}</p><div id="pprice"></div><div id="popts"></div><button class="primary" id="padd" style="margin-top:14px" onclick="addFromSheet()"></button>`);
   refreshProduct();
 }
@@ -1066,6 +1087,21 @@ function buyTickets(){ const cost=lotQty*20; if(S.balance<cost) return; S.balanc
   const nos=[]; for(let i=0;i<lotQty;i++){ const n=String(1000+Math.floor(Math.random()*9000)); nos.push(n); S.ticketNos.push(n); }
   coinBurst($('lotGo'),8);
   setTimeout(()=>{ sheet(`<div class="center" style="padding-top:6px"><h2>${t('lotDoneT')}</h2><p class="sub">${t('lotDoneS')}</p></div><div class="tixbig">${nos.map((n,i)=>`<div class="tbig" style="animation-delay:${i*90}ms"><span>${t('lotT')}</span><b>№ ${n}</b><small>${t('lotDate')}</small></div>`).join('')}</div><p class="sub center" style="margin-top:10px">${t('lotMine',{n:S.ticketNos.length})}</p><button class="primary" onclick="closeSheet();render()">${t('gotIt')}</button>`); },380); }
+function openWin(){ const no=(S.ticketNos||[])[0];
+  sheet(`<div class="center" style="padding-top:6px"><h2>${t('lotWinT')}</h2><p class="sub">${t('lotWinS')}</p></div>
+  <div class="tixbig"><div class="tbig win"><span>${t('lotRes')}</span><b>№ ${no}</b><small>${t('lotWon')}</small></div></div>
+  <div class="box" style="margin:14px 0"><div class="kv"><span>${t('lotYourPrize')}</span><span>${t('lotP1')}</span></div></div>
+  <button class="primary" onclick="openWinChat()">${t('lotContact')}</button>`); }
+function openWinChat(){ sheet(`<h2>${t('lotChatT')}</h2><p class="sub">${t('lotChatS')}</p><div class="box" style="margin:12px 0"><p style="margin:0;color:var(--sub);font-size:13px">${t('lotChatStub')}</p></div><button class="primary" onclick="closeSheet()">${t('gotIt')}</button>`); }
+function setLotDone(v){ S.lotDone=!!v; if(S.lotDone && !(S.ticketNos||[]).length) S.ticketNos=['0142','0143'];
+  if(S.lotDone && lvlIdx(S.earned)>=2){ closeSheet(); go('club'); setTimeout(()=>scrollScreenTo('.lottery'),420);
+    setTimeout(()=>{ if(S.notif.imp) showPush(t('lotPushT'), t('lotPushS',{n:S.ticketNos[0],p:t('lotP1')})); },1000); }
+  else { render(); }
+  renderPanels(); }
+const GUESTS = { amb:{earned:2090,balance:2110}, cof:{earned:1970,balance:1990} };
+function setGuest(g){ const p=GUESTS[g]; if(!p) return; S.guest=g; S.earned=p.earned; S.balance=p.balance;
+  S.claimed=[]; S.basket=[]; S.order=null; S.signed=false; S.ticketNos=[]; S.lotDone=false; S.voted=null;
+  S.tasks={tk1:false,tk2:false,tk3:false}; closeSheet(); go('home'); renderPanels(); }
 function openAnketa(){ const favs=PRODUCTS.filter(p=>!p.hidden);
   sheet(`<h2>${t('anketaT')}</h2><p class="sub">${t('anketaLead')}</p>
   <label class="fld"><span>${t('fBirth')}<small>${t('fBirthS')}</small></span><input type="date" value="1990-05-14"></label>
@@ -1083,9 +1119,9 @@ function openNotif(){ const row=(k,a,b)=>`<label class="prow" style="cursor:poin
   sheet(`<h2>${t('notif')}</h2><div class="list" style="padding:0">${row('imp','nImp','nImpS')}${row('order','nOrder','nOrderS')}${row('news','nNews','nNewsS')}</div><button class="primary" style="margin-top:16px" onclick="closeSheet()">${t('gotIt')}</button>`); }
 function openMigration(){ store.set('migSeen',true);
   sheet(`<h2>${t('migT')}</h2><p class="sub">${t('migS')}</p><div class="mig">
-  <div><b>1 970 XP</b><em>→</em><b>1 970 ZC</b><small>${t('migLvl')}</small></div>
-  <div><b>1 990 ZC</b><em>→</em><b>1 990 ZC</b><small>${t('migZc')}</small></div>
-  <div><b>10%</b><em>→</em><b>10%</b><small>${t('migDisc')}</small></div></div>
+  <div><b>${zc(S.earned)} XP</b><em>→</em><b>${zc(S.earned)} ZC</b><small>${t('migLvl')}</small></div>
+  <div><b>${zc(S.balance)} ZC</b><em>→</em><b>${zc(S.balance)} ZC</b><small>${t('migZc')}</small></div>
+  <div><b>10%</b><em>→</em><b>10%</b><small>${discPct()===10?t('migDisc',{l:nm(myLvl().n)}):t('migGrand',{l:nm(myLvl().n)})}</small></div></div>
   <p class="sub">${t('migNew')}</p><button class="primary" onclick="closeSheet()">${t('ok')}</button>`); }
 let pushT;
 function showPush(title,text){ const p=$('push'); p.innerHTML=`<span class="pi"><img src="${A.bean_w}" alt=""></span><span style="flex:1;min-width:0"><b><span>Zebra Coffee</span><small>${t('now')}</small></b><p><strong>${title}</strong><br>${text}</p></span>`; p.classList.add('show'); clearTimeout(pushT); pushT=setTimeout(hidePush,5200); }
@@ -1103,7 +1139,7 @@ const CMP = {
   cart:{img:'old_0661',cap:'Корзина',b:['Оплата в приложении вместо «Сгенерировать QR»','Видно, сколько сэкономила и сколько коинов получу','«Обычно вы берёте ещё» — по самому частому заказу, а не случайная выпечка','Прогресс к уровню — одной спокойной строкой','Закрытую кофейню нельзя выбрать для заказа']},
   order:{img:'old_0661',cap:'Корзина → QR',b:['Вместо QR для кассира — номер заказа и статус','Push, когда заказ готов','Забрать на стойке выдачи без очереди']},
   rewards:{img:'old_0663',cap:'Zebra Coins',b:['Постоянный каталог вместо «Отсутствуют товары»','Цена каждого подарка в ZC и что уже доступно','Подарок сразу превращается в код для кассы']},
-  club:{img:'old_0655',cap:'Награды и коины',b:['Коины, подарки, опрос, розыгрыш и задания — в одном разделе «Моя Zebra Coffee»','Опрос отделён от остального: это голос гостя, а не реклама','Привилегии уровня: что есть сейчас и что откроется у Амбассадора','Дни дегустации: новинка бесплатно для амбассадоров']},
+  club:{img:'old_0655',cap:'Награды и коины',b:['Коины, подарки, опрос, розыгрыш и задания — в одном разделе «Клуб»','Опрос отделён от остального: это голос гостя, а не реклама','Привилегии уровня: что есть сейчас и что откроется у Амбассадора','Дни дегустации: новинка бесплатно для амбассадоров']},
   level:{img:'old_0656',cap:'Мой рейтинг',b:['Одна валюта: XP и ZC объединены','Уровень за 12 месяцев с понятной датой подтверждения','Что даёт каждый уровень — на одном экране','Сумма потраченных денег нигде не показывается']},
   profile:{img:'old_0662',cap:'Профиль',b:['Уровень, скидка и коины — аккуратными плашками','«Любимая кофейня»: о ней приходят важные уведомления','Анкета за +30 ZC: день рождения и предпочтения','Язык интерфейса: русский и казахский']},
   history:{img:'old_0657',cap:'История XP',b:['Одна история вместо двух журналов XP и ZC','Сумма чека, скидка и коины — в одной строке']},
@@ -1115,19 +1151,23 @@ const TOUR = [
   ['В моей кофейне нет воды',()=>{closeSheet();setScenario('water');setPanelScenario()}],
   ['Предзаказ и оплата',()=>{closeSheet();if(!S.basket.length){addToBasket({id:'honey',size:360,milk:'reg',extra:'none',q:1});addToBasket({id:'cappuccino',size:450,milk:'reg',extra:'none',q:1});}go('cart')}],
   ['Подарки за коины',()=>{closeSheet();go('rewards')}],
-  ['Моя Zebra Coffee: опрос, розыгрыш, задания',()=>{closeSheet();go('club')}],
+  ['Клуб: привилегии, опрос, задания, розыгрыш',()=>{closeSheet();go('club')}],
+  ['Итоги розыгрыша и приз',()=>{setLotDone(true)}],
   ['Переход на новые правила',()=>{openMigration()}],
   ['Виджет на экране телефона',()=>{openWidget()}],
 ];
 function demoHtml(){
   return `<h2>Концепт приложения Zebra</h2><p class="lead">Как гость Zebra я показываю, каким может быть приложение. Всё на экране интерактивно.</p>
   <h3>Сценарий</h3><div class="seg" id="scSeg"><button aria-pressed="${S.scenario==='normal'}" onclick="setScenario('normal');setPanelScenario()">Обычный день</button><button aria-pressed="${S.scenario==='water'}" onclick="setScenario('water');setPanelScenario()">Нет воды</button></div>
+  <h3>Демо-гость</h3><div class="seg">${[['amb','Амбассадор'],['cof','Кофеман']].map(([k,l])=>`<button aria-pressed="${S.guest===k}" onclick="setGuest('${k}')">${l}</button>`).join('')}</div>
+  <p class="plead">«Амбассадор» — гость из письма: 2 090 ZC, скидка 10%, дни дегустации. «Кофеман» — 1 970 ZC и скидка 7%: на нём видно, как заказ открывает новый уровень.</p>
+  <h3>Розыгрыш</h3><div class="seg">${[[0,'Билеты'],[1,'Итоги']].map(([k,l])=>`<button aria-pressed="${!!S.lotDone===!!k}" onclick="setLotDone(${k})">${l}</button>`).join('')}</div>
   <h3>Язык и тема</h3><div style="display:grid;gap:6px"><div class="seg">${[['ru','Русский'],['kk','Қазақша']].map(([k,l])=>`<button aria-pressed="${S.lang===k}" onclick="setLang('${k}')">${l}</button>`).join('')}</div><div class="seg">${[['light','Светлая'],['dark','Тёмная']].map(([k,l])=>`<button aria-pressed="${S.theme===k}" onclick="setTheme('${k}')">${l}</button>`).join('')}</div></div>
   <h3>Посмотреть по шагам</h3><div class="tour">${TOUR.map((x,i)=>`<button onclick="TOUR[${i}][1]()">${x[0]}</button>`).join('')}</div>
   <p class="disclaimer">Неофициальный концепт постоянного гостя, не связан с Zebra Coffee. Цены, адреса, уровни и условия — для обсуждения. Оплата имитируется, время приготовления ускорено. Автор — Элла Макатова.</p>`;
 }
 function setPanelScenario(){ renderPanels(); }
-function cmpHtml(){ const c=CMP[S.page]||CMP.home; return `<h2>Было / Стало</h2><p class="lead">Слева — концепт, здесь — этот же экран в приложении сейчас (версия 1.24.0).</p><div class="cmp-img"><img src="${A[c.img]}" alt="Скриншот: ${c.cap}"></div><ul class="cmp-list">${c.b.map(x=>`<li>${x}</li>`).join('')}</ul>`; }
+function cmpHtml(){ const c=CMP[S.page]||CMP.home; return `<h2>Было / Стало</h2><p class="lead">Слева — концепт, здесь — этот же экран в приложении сейчас (версия 1.24.0, скриншоты — октябрь 2026).</p><div class="cmp-img"><img src="${A[c.img]}" alt="Скриншот: ${c.cap}"></div><ul class="cmp-list">${c.b.map(x=>`<li>${x}</li>`).join('')}</ul>`; }
 function renderPanels(){ const d=$('demoPanel'), c=$('cmpPanel'); if(getComputedStyle(d).display!=='none'){ d.innerHTML=demoHtml(); c.innerHTML=cmpHtml(); } }
 function openDemoMobile(){ sheet('<div class="demoin">'+demoHtml()+'</div>'); }
 function openCompareMobile(){ sheet('<div class="demoin">'+cmpHtml()+'</div>'); }
