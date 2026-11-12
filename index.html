@@ -107,7 +107,8 @@ html[data-theme=dark] .tour button::before{background:var(--teal)}
 .shopline .grow{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .shopline button{font-weight:600;text-decoration:underline;text-underline-offset:3px}
 .alert{position:relative;margin:-58px 18px 12px;background:var(--bg);border-radius:20px;padding:16px;box-shadow:var(--shadow);border-left:5px solid var(--alert)}
-.alert b{display:block;font-size:15px;margin-bottom:4px}
+.alert b{display:block;font-size:15px;margin-bottom:4px;padding-right:34px}
+.aclose{position:absolute;top:10px;right:10px;width:30px;height:30px;border-radius:50%;background:var(--surface);display:grid;place-items:center;font-size:17px;color:var(--sub);text-align:center}
 .alert p{font-size:13px;color:var(--sub);margin-bottom:6px}
 .alert small{display:block;font-size:11px;color:var(--sub);margin-bottom:12px}
 .alert .gift{font-size:12px;font-weight:500;color:var(--teal-d);margin-bottom:10px}
@@ -308,6 +309,8 @@ html[data-theme=dark] .gbtn{background:var(--teal)}
 .ptag.light{background:#fff;color:#000}
 .plist{list-style:none;padding:0;margin:6px 0 0;display:grid;gap:3px}
 .plist li{font-size:12.5px;color:var(--sub);display:flex;gap:7px}
+.plist li.inc{color:var(--ink);font-weight:500}
+.plist li.inc::before{background:var(--ink)}
 .plist li::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--teal);margin-top:7px;flex-shrink:0}
 .perk{align-items:flex-start!important}
 .tile p.link{color:var(--teal-d);font-weight:600;font-size:13px}html[data-theme=dark] .tile p.link{color:var(--aqua)}
@@ -448,9 +451,69 @@ html[data-theme=dark] .hist .tags .zc{color:var(--aqua)}
   .mpanel{display:block}
 }
 .mpanel{display:none}
+
+/* ---------- gate: обязательный дисклеймер ---------- */
+html.gated,html.gated body{overflow:hidden}
+.gate{position:fixed;inset:0;z-index:9999;background:rgba(7,16,18,.72);-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px);display:grid;place-items:center;padding:20px;overflow:auto}
+.gate[hidden]{display:none}
+.gatebox{background:var(--panel);color:var(--ink);border-radius:22px;max-width:560px;width:100%;padding:26px;box-shadow:0 24px 60px rgba(0,0,0,.35);margin:auto}
+.gatebox h1{font-size:21px;font-weight:700;letter-spacing:-.4px;margin-bottom:6px}
+.gatebox .glead{font-size:14px;color:var(--sub);margin-bottom:16px}
+.gatebox dl{display:grid;gap:12px;margin-bottom:18px}
+.gatebox dt{font-size:14px;font-weight:650;margin-bottom:2px}
+.gatebox dd{font-size:13.5px;color:var(--sub);line-height:1.45}
+.gateck{display:flex;gap:11px;align-items:flex-start;background:var(--surface);border-radius:14px;padding:13px 14px;cursor:pointer;font-size:13.5px;line-height:1.4}
+.gateck input{width:19px;height:19px;flex:none;margin:1px 0 0;accent-color:var(--teal);cursor:pointer}
+.gateok{width:100%;margin-top:14px;background:var(--teal);color:#fff;border-radius:14px;padding:14px;font-size:15px;font-weight:650;text-align:center}
+.gateok[disabled]{background:var(--line);color:var(--sub);cursor:not-allowed}
+.gatefoot{margin-top:12px;font-size:11.5px;color:var(--sub);text-align:center;line-height:1.4}
+@media (max-width:480px){.gatebox{padding:20px;border-radius:18px}.gatebox h1{font-size:19px}}
 </style>
 </head>
 <body>
+<div class="gate" id="gate" role="dialog" aria-modal="true" aria-labelledby="gateT">
+  <div class="gatebox">
+    <h1 id="gateT">Прежде чем открыть</h1>
+    <p class="glead">Пара важных вещей — прочитайте, это займёт полминуты.</p>
+    <dl>
+      <div><dt>Это неофициальный концепт</dt>
+      <dd>Демонстрацию сделала Элла Макатова как постоянный гость сети. Концепт никак не связан с Zebra Coffee: он не согласован с компанией, не является её продуктом и не отражает её планы.</dd></div>
+
+      <div><dt>Это не работающее приложение</dt>
+      <dd>Внутри можно проиграть только заранее заданные сценарии: обычный день, «в моей кофейне нет воды», предзаказ и оплата, подарки за коины, клуб с опросом и розыгрышем, переход на новые правила, виджет на экране телефона. Всё остальное не работает.</dd></div>
+
+      <div><dt>Все данные вымышлены</dt>
+      <dd>Цены, адреса, уровни, баллы, скидки, новости и условия придуманы для демонстрации и не соответствуют действительности. Оплата имитируется: деньги не списываются, заказ никуда не отправляется, кофе никто не приготовит.</dd></div>
+
+      <div><dt>Ничего не собирается</dt>
+      <dd>Страница работает прямо в вашем браузере, вводимые данные никуда не передаются и не сохраняются. Наружу уходит один запрос — за шрифтом к Google Fonts.</dd></div>
+
+      <div><dt>О названиях и знаках</dt>
+      <dd>Названия, логотипы и товарные знаки принадлежат их правообладателям и использованы здесь исключительно для иллюстрации идеи, без коммерческой цели.</dd></div>
+    </dl>
+    <label class="gateck" for="gateCk">
+      <input type="checkbox" id="gateCk">
+      <span>Я прочитал(а) и понимаю: это неофициальная демонстрация, не связанная с Zebra Coffee, и все данные в ней вымышлены.</span>
+    </label>
+    <button class="gateok" id="gateOk" disabled>Понятно, открыть концепт</button>
+    <p class="gatefoot">Автор — Элла Макатова</p>
+  </div>
+</div>
+<script>
+(function(){
+  var h=document.documentElement, g=document.getElementById('gate'),
+      ck=document.getElementById('gateCk'), ok=document.getElementById('gateOk');
+  h.classList.add('gated');
+  window.__gateOpen=true;
+  ck.checked=false;
+  ck.addEventListener('change',function(){ ok.disabled=!ck.checked; });
+  ok.addEventListener('click',function(){
+    if(!ck.checked) return;
+    g.hidden=true; h.classList.remove('gated');
+    if(typeof window.__afterGate==='function'){ var f=window.__afterGate; window.__afterGate=null; f(); }
+  });
+})();
+</script>
 <div class="mbar" role="region" aria-label="О концепте">
   <span>Концепт постоянного гостя, не официальное приложение Zebra Coffee</span>
   <button onclick="openCompareMobile()">Было</button>
@@ -564,7 +627,7 @@ const T = {
   rewardFor:['+{n} ZC: {t}','+{n} ZC: {t}'], forOrder:['за заказ','тапсырыс үшін'],
   lotT:['Розыгрыш месяца','Айдың ұтысы'], lotDate:['30 ноября','30 қараша'], lotS:['Покупайте билеты за коины. Чем больше билетов, тем выше шанс.','Коинге билет сатып алыңыз. Билет көп болса, мүмкіндік те жоғары.'],
   lotP1:['Фирменная бутылка Zebra Coffee','Zebra Coffee фирмалық бөтелкесі'], lotP2:['3 сертификата по 5 000 ₸','5 000 ₸-ден 3 сертификат'], lotP3:['Набор мерча Zebra Coffee','Zebra Coffee мерч жиынтығы'],
-  lotPrice:['Билет — 20 ZC','Билет — 20 ZC'], lotMine:['Ваши билеты: {n}','Сіздің билеттеріңіз: {n}'], lotBuy:['Купить билет','Билет сатып алу'], lotMore:['Купить ещё','Тағы сатып алу'], lotIn:['Вы участвуете','Сіз қатысасыз'], ticketLbl:['Билет','Билет'], lotBuyT:['Купить билеты','Билет сатып алу'], lotQty:['Количество билетов','Билет саны'], lotTotal:['Итого: {n}','Барлығы: {n}'], lotPay:['Купить за {n} ZC','{n} ZC-ге сатып алу'], lotDoneT:['Билеты куплены!','Билеттер сатып алынды!'], lotDoneS:['Итоги розыгрыша — 30 ноября. Пришлём уведомление, если выиграете.','Ұтыс қорытындысы — 30 қараша. Ұтсаңыз, хабарлама жібереміз.'], lotBought:['Билет куплен — удачи!','Билет сатып алынды — сәттілік!'], lotLock:['Розыгрыши открываются с уровня «Кофеман»','Ұтыстар «Кофеман» деңгейінен ашылады'],
+  lotPrice:['Билет — 20 ZC','Билет — 20 ZC'], lotMine:['Ваши билеты: {n}','Сіздің билеттеріңіз: {n}'], lotBuy:['Купить билет','Билет сатып алу'], closeAlert:['Закрыть предупреждение','Ескертуді жабу'], inclPrev:['Всё, что есть на уровне «{l}»','«{l}» деңгейіндегінің бәрі'], lotMore:['Купить ещё','Тағы сатып алу'], lotIn:['Вы участвуете','Сіз қатысасыз'], ticketLbl:['Билет','Билет'], lotBuyT:['Купить билеты','Билет сатып алу'], lotQty:['Количество билетов','Билет саны'], lotTotal:['Итого: {n}','Барлығы: {n}'], lotPay:['Купить за {n} ZC','{n} ZC-ге сатып алу'], lotDoneT:['Билеты куплены!','Билеттер сатып алынды!'], lotDoneS:['Итоги розыгрыша — 30 ноября. Пришлём уведомление, если выиграете.','Ұтыс қорытындысы — 30 қараша. Ұтсаңыз, хабарлама жібереміз.'], lotBought:['Билет куплен — удачи!','Билет сатып алынды — сәттілік!'], lotLock:['Розыгрыши открываются с уровня «Кофеман»','Ұтыстар «Кофеман» деңгейінен ашылады'],
   lotNote:['Призовой фонд и правила — для обсуждения с Zebra Coffee.','Жүлде қоры мен ережелер — Zebra Coffee-мен талқылауға.'],
   anketa:['Анкета','Сауалнама'], anketaS:['Расскажите о себе и получите +30 ZC','Өзіңіз туралы айтып, +30 ZC алыңыз'], anketaDone:['Заполнено','Толтырылды'],
   anketaT:['Расскажите о себе','Өзіңіз туралы айтыңыз'], anketaLead:['Все поля необязательные. За заполнение — +30 ZC один раз.','Барлық өріс міндетті емес. Толтырғаныңыз үшін бір рет +30 ZC.'],
@@ -613,6 +676,8 @@ const LV = [
   {n:['Легенда ZEBRACOFFEE','ZEBRACOFFEE аңызы'],from:6000,d:10,p:[['Создаём напиток сезона вместе','Маусым сусынын бірге жасаймыз'],['Подарок от Zebra Coffee раз в год','Жылына бір рет Zebra Coffee-ден сыйлық']]},
 ];
 const perks = i => LV[i].p.map(x=>nm(x));
+const perksFull = i => { const own=perks(i), out=[]; if(i>0) out.push({inc:true,txt:t('inclPrev',{l:nm(LV[i-1].n)})}); if(LV[i].d && !own.some(x=>x.includes('%'))) out.push({txt:t('discTag',{d:LV[i].d})}); own.forEach(x=>out.push({txt:x})); return out; };
+const plistFull = i => `<ul class="plist">${perksFull(i).map(x=>`<li${x.inc?' class="inc"':''}>${x.txt}</li>`).join('')}</ul>`;
 const PRODUCTS = [
   {id:'espresso',n:['Эспрессо','Эспрессо'],base:590,img:'arabica',type:'coffee',temp:'hot',noSize:true,d:['Короткий и плотный. 100% арабика.','Қысқа әрі қою. 100% арабика.']},
   {id:'americano',n:['Американо','Американо'],base:890,img:'americano',type:'coffee',temp:'hot',d:['Двойной эспрессо и горячая вода. Чистый вкус 100% арабики.','Қос эспрессо мен ыстық су. 100% арабиканың таза дәмі.']},
@@ -758,7 +823,7 @@ const VIEWS = {
 home(){
   const li=lvlIdx(S.earned), lv=LV[li], ni=nextLevelInfo(), sh=SHOPS[S.myShop], water=!shopOk(S.myShop), alt=nearestOk();
   const status = '';
-  const alert = water ? `<section class="alert" role="alert"><b>${sh.n}: ${t('alertTitle').toLowerCase()}</b><p>${t('alertText')}</p><small>${t('alertUpd')}</small><div class="gift">${ic('gift',16)} ${t('alertGift')}</div><button class="primary dark" onclick="pickShop(${alt},true)">${t('alertBtn',{s:SHOPS[alt].n,d:SHOPS[alt].d})}</button></section>` : '';
+  const alert = (water && !S.alertOff) ? `<section class="alert" role="alert"><button class="aclose" onclick="S.alertOff=true;render()" aria-label="${t('closeAlert')}">×</button><b>${sh.n}: ${t('alertTitle').toLowerCase()}</b><p>${t('alertText')}</p><small>${t('alertUpd')}</small><div class="gift">${ic('gift',16)} ${t('alertGift')}</div><button class="primary dark" onclick="pickShop(${alt},true)">${t('alertBtn',{s:SHOPS[alt].n,d:SHOPS[alt].d})}</button></section>` : '';
   const ord = S.order ? orderCard() : '';
   const prog = ni ? `<button class="tile" onclick="go('level')"><h3><span>${t('toLevel',{l:nm(ni.next.n)})}</span><span class="chev">›</span></h3><div class="big">${t('gapZc',{n:num(ni.gap)})}</div><div class="bar"><i data-w="${ni.pct}%"></i></div><p class="link">${t('seePerks')} ›</p></button>` : '';
   return `<div class="top"><div class="ornament"></div>${header()}${status}</div>${alert}
@@ -818,7 +883,7 @@ club(){
   const total=S.votes.reduce((a,b)=>a+b,0);
   const plist = arr => `<ul class="plist">${arr.map(x=>`<li>${x}</li>`).join('')}</ul>`;
   const invite = amb ? `<div class="invite"><img class="invimg" src="${A.c_tasting_days}" alt=""><div style="position:relative"><div class="itag">${t('inviteT')}</div><h3>${t('tasteT')}</h3><div class="chipsrow" style="margin-top:8px"><span class="chip inv">${t('tasteD')}</span><span class="chip inv">${t('tasteV')}</span></div><p>${t('tasteW')}</p>${S.signed?`<span class="pill ready" style="margin-top:12px">✓ ${t('signed')}</span>`:`<button class="primary" style="margin-top:12px;background:#fff;color:#000" onclick="S.signed=true;addToBasket({id:'taste',q:1});toast(t('signedToast'));render()">${t('signUp')}</button>`}</div></div>` : '';
-  const nextCard = ni ? `<div class="perk locked"><span class="pi2">${ic('lock',18)}</span><span class="grow"><b>${t('perksNext',{l:nm(ni.next.n)})}</b><small>${t('gapZc',{n:num(ni.gap)})}</small>${plist(perks(lvlIdx(ni.next.from)))}</span></div>` : '';
+  const nextCard = ni ? `<div class="perk locked"><span class="pi2">${ic('lock',18)}</span><span class="grow"><b>${t('perksNext',{l:nm(ni.next.n)})}</b><small>${t('gapZc',{n:num(ni.gap)})}</small>${plistFull(lvlIdx(ni.next.from))}</span></div>` : '';
   const task=(k,z,done)=>`<div class="tile task2"><div class="grow"><h3>${t(k)}</h3><p>${t(k+'s')}</p><div class="chipsrow" style="margin-top:8px"><span class="chip zc"><span class="coin">Z</span>+${z} ZC</span>${done?`<span class="chip ok">✓ ${t('done')}</span>`:''}</div></div></div>`;
   const tasks = li>=1 ? task('tk1',20,S.tasks.tk1)+task('tk2',15,S.tasks.tk2)+task('tk3',10,S.tasks.tk3)+`<div class="tile task2"><div class="task"><div class="grow"><h3>${t('tk4')}</h3><p>${t('tk4s')}</p><div class="chipsrow" style="margin-top:8px"><span class="chip zc"><span class="coin">Z</span>+10 ZC</span></div></div><button class="gbtn" onclick="toast(t('linkCopied'))">${t('invite')}</button></div></div>` : `<p class="pad lockline">${ic('lock',14)} ${t('tasksLock')}</p>`;
   const tix=S.ticketNos||[];
@@ -827,7 +892,7 @@ club(){
   <section class="clubcard" style="min-height:0">${stripes(.8)}<p style="margin:0 0 2px">${t('balance')}</p><h2 style="font-size:34px"><span id="zcBal2">${zc(S.balance)}</span> ZC</h2><p>${t('balanceS')}</p><button class="primary" style="margin-top:14px;max-width:200px;position:relative;padding:12px" onclick="go('rewards')">${t('chooseGift')}</button></section>
   <section class="poll vote" aria-label="${t('voteT')}"><div class="ornament"></div><div style="position:relative"><div class="chipsrow"><span class="ptag">${t('pollAll')}</span><span class="ptag light">${t('pollZc')}</span></div><h2>${t('voteT')}</h2><p>${S.voted!==null?t('votedNote'):t('voteS')}</p><img class="pollimg" src="${A.c_poll_winter}" alt="">${['v1','v2','v3','v4'].map((k,i)=>{const pc=Math.round(S.votes[i]/total*100);return `<button class="${S.voted===i?'mine':''}" onclick="vote(${i})" ${S.voted!==null?'aria-disabled="true"':''}><span class="fill" data-vw="${pc}%" style="width:${S.voted!==null?pc+'%':'0'}"></span><span><span>${t(k)}</span><span>${S.voted!==null?pc+'%':''}</span></span></button>`}).join('')}</div></section>
   <div class="sect"><h2>${t('perksT')}</h2></div>
-  <div class="perk"><span class="pi2 on">${ic('star',18,true)}</span><span class="grow"><b>${t('nowYou')}: ${nm(lv.n)}</b>${plist((()=>{const cur=perks(li); if(lv.d&&!cur.some(x=>x.includes('%'))) cur.unshift(t('discTag',{d:lv.d})); return cur;})())}</span></div>
+  <div class="perk"><span class="pi2 on">${ic('star',18,true)}</span><span class="grow"><b>${t('nowYou')}: ${nm(lv.n)}</b>${plistFull(li)}</span></div>
   ${invite}${nextCard}
   <div class="btnrow"><button class="ghost" onclick="go('level')">${t('allPerks')} ›</button></div>
   <div style="height:10px"></div>${lottery}
@@ -843,7 +908,7 @@ rewards(){
 level(){
   const li=lvlIdx(S.earned), ni=nextLevelInfo();
   return subhead(t('myLevel'))+`<section class="clubcard" style="min-height:0">${stripes(.7)}<h2>${nm(LV[li].n)}</h2><div class="chipsrow" style="margin:8px 0 6px;position:relative"><span class="chip inv">${t('discTag',{d:LV[li].d})}</span><span class="chip inv">${zc(S.earned)} ZC</span></div><p>${t('yearZc',{n:zc(S.earned)})}<br>${t('validTill')}</p>${ni?`<div class="bar"><i data-w="${ni.pct}%"></i></div><p style="margin-top:0">${t('toLevel',{l:nm(ni.next.n)})}: ${(g=>g.charAt(0).toLowerCase()+g.slice(1))(t('gapZc',{n:num(ni.gap)}))}</p>`:''}</section>
-  <div class="list">${LV.map((l,i)=>`<div class="lvl ${i<li?'got':i===li?'cur':'locked'}"><span class="ic">${i<=li?'✓':ic('lock',16)}</span><span style="flex:1;min-width:0"><b>${nm(l.n)}</b>${i===li?` <span class="chip mini">${t('levelTag')}</span>`:''}<small>${t('fromX',{x:num(l.from)})}</small><ul class="plist">${perks(i).map(x=>`<li>${x}</li>`).join('')}</ul></span></div>`).join('')}</div>
+  <div class="list">${LV.map((l,i)=>`<div class="lvl ${i<li?'got':i===li?'cur':'locked'}"><span class="ic">${i<=li?'✓':ic('lock',16)}</span><span style="flex:1;min-width:0"><b>${nm(l.n)}</b>${i===li?` <span class="chip mini">${t('levelTag')}</span>`:''}<small>${t('fromX',{x:num(l.from)})}</small>${plistFull(i)}</span></div>`).join('')}</div>
   <p class="pad" style="color:var(--sub);font-size:12.5px;margin-top:14px">${t('lvlNote')}</p>`;
 },
 profile(){
@@ -952,7 +1017,8 @@ function runOrder(){ clearInterval(orderTimer); orderTimer=setInterval(()=>{ con
   if(ns!==o.status){ o.status=ns; if(S.page==='order'||S.page==='home') render(); if(ns===2){ clearInterval(orderTimer); if(S.notif.order) showPush(t('readyPush',{n:o.no}), t('readyPushS',{s:SHOPS[o.shop].n})); } }
   else { document.querySelectorAll('#eta,[data-eta]').forEach(e=>e.textContent=o.status<2?t('eta',{m:fmtLeft(o)}):t('readyNow')); } },250); }
 function pickedUp(){ S.order=null; go('home'); }
-function celebrate(){ const c=$('celebrate'); c.innerHTML=`<div class="sweep"></div><img class="cbean" src="${A.bean_w}" alt=""><h2>${t('welcome')}</h2><p>${t('welcomeS')}</p><button class="primary" onclick="$('celebrate').classList.remove('show');go('club');setTimeout(()=>document.querySelector('.invite')?.scrollIntoView({behavior:'smooth',block:'center'}),350)">${t('toClubBtn')}</button><button style="position:relative;margin-top:14px;font-weight:600;opacity:.8" onclick="$('celebrate').classList.remove('show');go('order')">${t('later')}</button>`; c.classList.add('show'); }
+function scrollScreenTo(sel){ const el=document.querySelector(sel), sc=$('screen'); if(!el) return; const r=el.getBoundingClientRect(), R=sc.getBoundingClientRect(); sc.scrollTo({top:sc.scrollTop+r.top-R.top-R.height/2+r.height/2,behavior:'smooth'}); }
+function celebrate(){ const c=$('celebrate'); c.innerHTML=`<div class="sweep"></div><img class="cbean" src="${A.bean_w}" alt=""><h2>${t('welcome')}</h2><p>${t('welcomeS')}</p><button class="primary" onclick="$('celebrate').classList.remove('show');go('club');setTimeout(()=>scrollScreenTo('.invite'),350)">${t('toClubBtn')}</button><button style="position:relative;margin-top:14px;font-weight:600;opacity:.8" onclick="$('celebrate').classList.remove('show');go('order')">${t('later')}</button>`; c.classList.add('show'); }
 function vote(i){ if(S.voted!==null) return; S.voted=i; S.votes[i]++; S.balance+=5; S.earned+=5; render(); toast(t('voted')); requestAnimationFrame(()=>document.querySelectorAll('.vote .fill').forEach(f=>{f.style.width='0';requestAnimationFrame(()=>f.style.width=f.dataset.vw)})); }
 let lotQty=1;
 function openLottery(){ const max=Math.max(1,Math.min(10,Math.floor(S.balance/20))); lotQty=Math.min(lotQty,max);
@@ -990,7 +1056,7 @@ function openMigration(){ store.set('migSeen',true);
 let pushT;
 function showPush(title,text){ const p=$('push'); p.innerHTML=`<span class="pi"><img src="${A.bean_w}" alt=""></span><span style="flex:1;min-width:0"><b><span>Zebra Coffee</span><small>${t('now')}</small></b><p><strong>${title}</strong><br>${text}</p></span>`; p.classList.add('show'); clearTimeout(pushT); pushT=setTimeout(hidePush,5200); }
 function hidePush(){ $('push').classList.remove('show'); }
-function setScenario(s){ S.scenario=s; if(s==='water'){ if(S.pickShop===0) S.pickShop=nearestOk(); go('home'); setTimeout(()=>{ if(S.notif.imp) showPush(t('pushImp'), t('pushWater',{s:SHOPS[0].n,o:SHOPS[1].n,d:SHOPS[1].d})); },700); } else { render(); } }
+function setScenario(s){ S.scenario=s; S.alertOff=false; if(s==='water'){ if(S.pickShop===0) S.pickShop=nearestOk(); go('home'); setTimeout(()=>{ if(S.notif.imp) showPush(t('pushImp'), t('pushWater',{s:SHOPS[0].n,o:SHOPS[1].n,d:SHOPS[1].d})); },700); } else { render(); } }
 function setLang(l){ S.lang=l; store.set('lang',l); document.documentElement.lang=l==='kk'?'kk':'ru'; render(); }
 function setTheme(th){ S.theme=th; store.set('theme',th); document.documentElement.dataset.theme=th; render(); }
 setInterval(()=>{ const e=$('phrase'); if(!e) return; e.style.opacity=0; setTimeout(()=>{ S.phrase++; const e2=$('phrase'); if(e2){ e2.textContent='♡ '+t('phrases')[S.phrase%2]; e2.style.opacity=1; } },300); },4000);
@@ -1035,7 +1101,7 @@ function openCompareMobile(){ sheet('<div class="demoin">'+cmpHtml()+'</div>'); 
 /* ================= boot ================= */
 document.documentElement.dataset.theme=S.theme; document.documentElement.lang=S.lang==='kk'?'kk':'ru';
 render();
-if(!store.get('migSeen',false)) setTimeout(openMigration,700);
+if(!store.get('migSeen',false)){ const _mig=()=>setTimeout(openMigration,700); if(window.__gateOpen){ window.__afterGate=_mig; } else { _mig(); } }
 addEventListener('resize',()=>renderPanels());
 </script>
 </body>
