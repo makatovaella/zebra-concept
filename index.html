@@ -292,6 +292,7 @@ html[data-theme=dark] .gbtn{background:var(--teal)}
 .perk .pi2{width:38px;height:38px;border-radius:12px;background:var(--surface);display:grid;place-items:center;flex-shrink:0;color:var(--sub)}
 .perk .pi2.on{background:var(--teal);color:#fff}
 .perk.locked{border-style:dashed}
+.perk .nxt{display:block;font-style:normal;font-size:10.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--sub);margin-bottom:4px;font-weight:600}
 .invite{position:relative;overflow:hidden;margin:0 18px 12px;border-radius:22px;background:#000;color:#fff;padding:18px}
 .pollimg{width:100%;aspect-ratio:16/8;object-fit:cover;border-radius:16px;margin:12px 0 2px;display:block}
 .invimg{width:calc(100% + 36px);margin:-18px -18px 14px;aspect-ratio:16/8;object-fit:cover;display:block;max-width:none}
@@ -671,7 +672,7 @@ const T = {
   anketaT:['Расскажите о себе','Өзіңіз туралы айтыңыз'], anketaLead:['Все поля необязательные. За заполнение — +30 ZC один раз.','Барлық өріс міндетті емес. Толтырғаныңыз үшін бір рет +30 ZC.'],
   fBirth:['День рождения','Туған күн'], fBirthS:['Пришлём подарок','Сыйлық жібереміз'], fFav:['Любимый напиток','Сүйікті сусын'], fMilk:['Молоко','Сүт'], fCity:['Город','Қала'], fWhen:['Когда обычно пьёте кофе','Әдетте кофені қашан ішесіз'],
   wMorning:['Утром','Таңертең'], wDay:['Днём','Күндіз'], wEvening:['Вечером','Кешке'], saveZc:['Сохранить и получить +30 ZC','Сақтап, +30 ZC алу'], savedZc:['Спасибо! +30 ZC','Рақмет! +30 ZC'],
-  perksNext:['На уровне «{l}»','«{l}» деңгейінде'], allPerks:['Все уровни и привилегии','Барлық деңгейлер мен артықшылықтар'], seePerks:['Посмотреть привилегии','Артықшылықтарды көру'],
+  perksNext:['На уровне «{l}»','«{l}» деңгейінде'], nextLvlTag:['Следующий уровень','Келесі деңгей'], allPerks:['Все уровни и привилегии','Барлық деңгейлер мен артықшылықтар'], seePerks:['Посмотреть привилегии','Артықшылықтарды көру'],
   balanceS:['Обменивайте коины на подарки: добавку к напитку, больший объём или напиток целиком.','Коинді сыйлыққа айырбастаңыз: сусынға қосымша, үлкен көлем немесе тұтас сусын.'],
   levelTag:['Ваш уровень','Сіздің деңгейіңіз'], discTag:['Скидка {d}%','{d}% жеңілдік'],
   task2:['Пригласите друга','Досыңызды шақырыңыз'], task2s:['+10 ZC, когда друг сделает первый заказ от 500 ₸','Досыңыз 500 ₸-ден бастап алғашқы тапсырыс бергенде +10 ZC'],
@@ -936,7 +937,7 @@ club(){
   const total=S.votes.reduce((a,b)=>a+b,0);
   const plist = arr => `<ul class="plist">${arr.map(x=>`<li>${x}</li>`).join('')}</ul>`;
   const invite = amb ? `<div class="invite"><img class="invimg" src="${A.c_tasting_days}" alt=""><div style="position:relative"><div class="itag">${t('inviteT')}</div><h3>${t('tasteT')}</h3><div class="chipsrow" style="margin-top:8px"><span class="chip inv">${t('tasteD')}</span><span class="chip inv">${t('tasteV')}</span></div><p>${t('tasteW')}</p>${S.signed?`<span class="pill ready" style="margin-top:12px">✓ ${t('signed')}</span>`:`<button class="primary" style="margin-top:12px;background:#fff;color:#000" onclick="S.signed=true;addToBasket({id:'taste',q:1});toast(t('signedToast'));render()">${t('signUp')}</button>`}</div></div>` : '';
-  const nextCard = ni ? `<div class="perk locked"><span class="pi2">${ic('lock',18)}</span><span class="grow"><b>${t('perksNext',{l:nm(ni.next.n)})}</b><small>${t('gapZc',{n:num(ni.gap)})}</small>${plistFull(lvlIdx(ni.next.from))}</span></div>` : '';
+  const nextCard = ni ? `<div class="perk locked"><span class="pi2">${ic('lock',18)}</span><span class="grow"><em class="nxt">${t('nextLvlTag')}</em><b>${t('perksNext',{l:nm(ni.next.n)})}</b><small>${t('gapZc',{n:num(ni.gap)})}</small>${plistFull(lvlIdx(ni.next.from))}</span></div>` : '';
   const task=(k,z,done)=>`<div class="tile task2"><div class="grow"><h3>${t(k)}</h3><p>${t(k+'s')}</p><div class="chipsrow" style="margin-top:8px"><span class="chip zc"><span class="coin">Z</span>+${z} ZC</span>${done?`<span class="chip ok">✓ ${t('done')}</span>`:''}</div></div></div>`;
   const tasks = li>=1 ? task('tk1',20,S.tasks.tk1)+task('tk2',15,S.tasks.tk2)+task('tk3',10,S.tasks.tk3) : `<p class="pad lockline">${ic('lock',14)} ${t('tasksLock')}</p>`;
   const friend = `<div class="tile task2"><div class="task"><div class="grow"><h3>${t('tk4')}</h3><p>${t('tk4s')}</p><div class="chipsrow" style="margin-top:8px"><span class="chip zc"><span class="coin">Z</span>+10 ZC</span></div></div><button class="gbtn" onclick="toast(t('linkCopied'))">${t('invite')}</button></div></div>`;
