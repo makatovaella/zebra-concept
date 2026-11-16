@@ -395,7 +395,7 @@ html[data-theme=dark] .hist .tags .zc{color:var(--aqua)}
 .pay .pm{width:38px;height:26px;border-radius:7px;display:grid;place-items:center;font-size:10px;font-weight:650;color:#fff;background:#E4202A}
 .spinner{width:46px;height:46px;border:4px solid var(--line);border-top-color:var(--teal);border-radius:50%;margin:30px auto 14px;animation:spin .8s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
-.bigqr{background:#fff;border-radius:24px;padding:18px;margin:8px auto 12px;width:270px;position:relative;color:#000}
+.bigqr{display:block;background:#fff;border-radius:24px;padding:18px;margin:8px auto 10px;width:270px;position:relative;color:#000}
 .bigqr svg{width:234px;height:234px;display:block}
 .bigqr .qb{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:46px;height:52px;background:#fff;border-radius:10px;padding:6px}
 .center{text-align:center}
@@ -427,6 +427,15 @@ html[data-theme=dark] .hist .tags .zc{color:var(--aqua)}
 .toast.show{opacity:1;transform:translate(-50%,0)}
 .flyer{position:absolute;z-index:50;border-radius:50%;object-fit:cover;pointer-events:none}
 .flycoin{position:absolute;z-index:50;width:22px;height:22px;border-radius:50%;background:var(--aqua);color:#000;font-size:9px;font-weight:650;display:grid;place-items:center;pointer-events:none;box-shadow:0 2px 6px rgba(0,0,0,.2)}
+.qrfull{position:absolute;inset:0;z-index:60;background:#fff;color:#000;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:16px;padding:28px;opacity:0;pointer-events:none;transition:opacity .25s;cursor:pointer}
+.qrfull.show{opacity:1;pointer-events:auto}
+.qrfull .qwrap{position:relative;width:min(300px,80%)}
+.qrfull .qwrap svg{width:100%;height:auto;display:block;color:#000}
+.qrfull .qb{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:58px;height:66px;background:#fff;border-radius:13px;padding:8px}
+.qrfull b{font-size:19px}
+.qrfull em{font-style:normal;font-size:14px;color:#5E7073}
+.qrfull p{margin:0;font-size:12.5px;color:#8A9A9C;text-align:center;max-width:260px}
+.qrfull .xbtn{position:absolute;top:16px;right:16px;width:38px;height:38px;border-radius:50%;background:#F1F4F4;color:#000;font-size:21px;line-height:1;display:grid;place-items:center}
 .celebrate{position:absolute;inset:0;z-index:45;background:#000;color:#fff;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:30px;opacity:0;pointer-events:none;transition:opacity .4s;overflow:hidden}
 .celebrate.show{opacity:1;pointer-events:auto}
 .celebrate .sweep{position:absolute;inset:-40%;background:repeating-linear-gradient(115deg,#fff 0 26px,#000 26px 62px);opacity:.1;animation:sweep 6s linear infinite}
@@ -568,6 +577,7 @@ html.gated,html.gated body{overflow:hidden}
     <button class="push" id="push" onclick="hidePush();go('home')"></button>
     <div class="toast" id="toast" role="status"></div>
     <div class="celebrate" id="celebrate" role="dialog" aria-modal="true"></div>
+    <div class="qrfull" id="qrfull" role="dialog" aria-modal="true" onclick="closeQrFull()"></div>
     <div class="layer" id="layer"><div class="backdrop" onclick="closeSheet()"></div><div class="sheet" id="sheet" role="dialog" aria-modal="true"></div></div>
   </div></div>
   <aside class="panel" id="cmpPanel" aria-label="Было и стало"></aside>
@@ -700,7 +710,16 @@ const T = {
   support:['Написать в поддержку','Қолдау қызметіне жазу'], supportT:['Поддержка','Қолдау'], supportS:['В рабочем приложении здесь откроется чат с поддержкой.','Жұмыс қосымшасында мұнда қолдау чаты ашылады.'],
   logout:['Выйти','Шығу'], logoutS:['Это демонстрационный профиль, выходить не нужно.','Бұл демонстрациялық профиль, шығудың қажеті жоқ.'],
   qrTitle:['Карта гостя','Қонақ картасы'], wallet:['Добавить в Wallet','Wallet-ке қосу'], widgetBtn:['Виджет на экран','Экранға виджет'],
-  walletToast:['В рабочем приложении здесь откроется Apple Wallet','Жұмыс қосымшасында мұнда Apple Wallet ашылады'],
+  walletToast:['Карта добавлена в Wallet','Карта Wallet-ке қосылды'],
+  qrTap:['Нажмите на код, чтобы открыть его на весь экран','Кодты толық экранда ашу үшін басыңыз'],
+  qrFullT:['Поднесите к сканеру','Сканерге жақындатыңыз'],
+  qrBright:['Яркость экрана увеличена автоматически. Нажмите, чтобы закрыть.','Экран жарықтығы автоматты түрде арттырылды. Жабу үшін басыңыз.'],
+  closeBtn:['Закрыть','Жабу'],
+  walletT:['Карта гостя в Wallet','Wallet-тегі қонақ картасы'],
+  walletS:['Карта ляжет в кошелёк телефона: её можно показать на кассе, не открывая приложение. Уровень и скидка на ней обновляются сами.','Карта телефон әмиянына түседі: оны қосымшаны ашпай-ақ кассада көрсетуге болады. Ондағы деңгей мен жеңілдік өзі жаңарады.'],
+  walletAdd:['Добавить карту','Картаны қосу'],
+  walletHave:['Карта уже в Wallet','Карта Wallet-те бар'],
+  walletStub:['В прототипе это заглушка. В приложении карта добавляется в Apple Wallet или Google Кошелёк.','Прототипте бұл — үлгі. Қосымшада карта Apple Wallet немесе Google Әмиянға қосылады.'],
   widgetT:['Виджет на экране «Домой»','«Үй» экранындағы виджет'], widgetS:['QR и статус вашей кофейни — без открытия приложения. Если что-то случилось, это видно сразу.','QR мен кофеханаңыздың мәртебесі — қосымшаны ашпай-ақ. Бірдеңе болса, бірден көрінеді.'],
   widgetOk:['работает до 22:00','22:00-ге дейін ашық'], widgetBad:['нет воды, напитки не готовим','су жоқ, сусын дайындалмайды'],
   welcome:['Вы — Амбассадор','Сіз — Амбассадорсыз'], welcomeS:['В дни запуска новинок пробная порция для вас бесплатна. Ближайшие дни дегустации — 5–7 декабря.','Жаңа өнім шыққан күндері дәм тату порциясы сізге тегін. Жақын дәм тату күндері — 5–7 желтоқсан.'],
@@ -788,7 +807,7 @@ const pimg = p => p.img ? A[p.img] : artSvg(p);
 const store = { get(k,d){try{const v=localStorage.getItem('zebra2-'+k);return v===null?d:JSON.parse(v)}catch(e){return d}}, set(k,v){try{localStorage.setItem('zebra2-'+k,JSON.stringify(v))}catch(e){}} };
 const S = {
   lang: store.get('lang','ru'), theme: store.get('theme','light'), scenario:'normal',
-  page:'home', stack:[], basket:[], balance:2110, earned:2090, claimed:[], order:null, signed:false, guest:'amb',
+  page:'home', stack:[], basket:[], balance:2110, earned:2090, claimed:[], order:null, signed:false, guest:'amb', wallet:false,
   myShop:0, pickShop:0, tickets:0, lotDone:false, anketa:false, tasks:{tk1:false,tk2:false,tk3:false}, when:'asap', voted:null, votes:[412,286,351,198],
   notif:{imp:true,news:false,order:true}, phrase:0,
   history:[
@@ -1015,7 +1034,13 @@ function sheet(html){ $('sheet').innerHTML=`<div class="grab"></div><button clas
 function closeSheet(){ $('layer').classList.remove('open'); }
 function info(title,text){ sheet(`<h2>${title}</h2><p class="sub">${text}</p><button class="primary" onclick="closeSheet()">${t('gotIt')}</button>`); }
 let toastT; function toast(m){ const e=$('toast'); e.textContent=m; e.classList.add('show'); clearTimeout(toastT); toastT=setTimeout(()=>e.classList.remove('show'),2400); }
-function openQr(){ const lv=LV[lvlIdx(S.earned)]; sheet(`<h2 class="center">${t('qrTitle')}</h2><div class="chipsrow" style="justify-content:center;margin-bottom:6px"><span class="chip dark">${nm(lv.n)}</span><span class="chip">${t('discTag',{d:lv.d})}</span></div><div class="bigqr">${qrSvg()}<img class="qb" src="${A.bean_k}" alt=""></div><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px"><button class="ghost" onclick="toast(t('walletToast'))">${t('wallet')}</button><button class="ghost" onclick="openWidget()">${t('widgetBtn')}</button></div>`); }
+function openQr(){ const lv=LV[lvlIdx(S.earned)]; sheet(`<h2 class="center">${t('qrTitle')}</h2><div class="chipsrow" style="justify-content:center;margin-bottom:6px"><span class="chip dark">${nm(lv.n)}</span><span class="chip">${t('discTag',{d:lv.d})}</span></div><button class="bigqr" onclick="openQrFull()" aria-label="${t('qrFullT')}">${qrSvg()}<img class="qb" src="${A.bean_k}" alt=""></button><p class="sub center" style="margin:0 0 12px;font-size:12.5px">${t('qrTap')}</p><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px"><button class="ghost" onclick="openWallet()">${t('wallet')}</button><button class="ghost" onclick="openWidget()">${t('widgetBtn')}</button></div>`); }
+function openQrFull(){ const lv=LV[lvlIdx(S.earned)], el=$('qrfull');
+  el.innerHTML=`<button class="xbtn" aria-label="${t('closeBtn')}" onclick="closeQrFull()">×</button><div class="qwrap">${qrSvg()}<img class="qb" src="${A.bean_k}" alt=""></div><b>${t('qrFullT')}</b><em>${nm(lv.n)} · ${t('discTag',{d:lv.d})}</em><p>${t('qrBright')}</p>`;
+  el.classList.add('show'); }
+function closeQrFull(){ $('qrfull').classList.remove('show'); }
+function openWallet(){ const lv=LV[lvlIdx(S.earned)];
+  sheet(`<h2>${t('walletT')}</h2><p class="sub">${t('walletS')}</p><div class="widget-demo"><div class="widget">${stripes(.35)}<div class="wq">${qrSvg()}</div><small>Zebra Coffee<br>${nm(lv.n)} · ${t('discTag',{d:lv.d})}</small></div></div><div class="box" style="margin:12px 0"><p style="margin:0;color:var(--sub);font-size:13px">${t('walletStub')}</p></div>${S.wallet?`<button class="ghost" onclick="closeSheet()">✓ ${t('walletHave')}</button>`:`<button class="primary" onclick="S.wallet=true;closeSheet();toast(t('walletToast'))">${t('walletAdd')}</button>`}`); }
 function openWidget(){ const bad=!shopOk(S.myShop); sheet(`<h2>${t('widgetT')}</h2><p class="sub">${t('widgetS')}</p><div class="widget-demo"><div class="widget">${stripes(.35)}<div class="wq">${qrSvg()}</div><small><span class="wdot ${bad?'bad':''}"></span>${SHOPS[S.myShop].n}<br>${bad?t('widgetBad'):t('widgetOk')}</small></div></div><button class="primary" onclick="closeSheet()">${t('gotIt')}</button>`); }
 const PSEL={};
 function openProduct(id){
@@ -1101,7 +1126,7 @@ function setLotDone(v){ S.lotDone=!!v; if(S.lotDone && !(S.ticketNos||[]).length
   renderPanels(); }
 const GUESTS = { amb:{earned:2090,balance:2110}, cof:{earned:1970,balance:1990} };
 function setGuest(g){ const p=GUESTS[g]; if(!p) return; S.guest=g; S.earned=p.earned; S.balance=p.balance;
-  S.claimed=[]; S.basket=[]; S.order=null; S.signed=false; S.ticketNos=[]; S.lotDone=false; S.voted=null;
+  S.claimed=[]; S.basket=[]; S.order=null; S.signed=false; S.ticketNos=[]; S.lotDone=false; S.voted=null; S.wallet=false;
   S.tasks={tk1:false,tk2:false,tk3:false}; closeSheet(); go('home'); renderPanels(); }
 function openAnketa(){ const favs=PRODUCTS.filter(p=>!p.hidden);
   sheet(`<h2>${t('anketaT')}</h2><p class="sub">${t('anketaLead')}</p>
@@ -1137,7 +1162,7 @@ document.addEventListener('keydown',e=>{ if(e.key==='Escape'){ closeSheet(); $('
 
 /* ================= panels: demo + compare ================= */
 const CMP = {
-  home:{img:'old_0654',cap:'Главная',b:['QR и скидка видны сразу, без кнопки «Мой QR»','Прогресс понятным языком: «Ещё 30 ZC — примерно 3 покупки» и что откроется','Предупреждение о своей кофейне появляется, только если что-то случилось','Новости с читаемыми заголовками вместо обрезанных сторис']},
+  home:{img:'old_0654',cap:'Главная',b:['QR и скидка видны сразу, без кнопки «Мой QR»','Прогресс понятным языком: «Ещё 30 ZC — примерно 3 покупки» и что откроется','Предупреждение о своей кофейне появляется, только если что-то случилось','Новости с читаемыми заголовками вместо обрезанных сторис','Карту можно добавить в Wallet, а QR — развернуть на весь экран']},
   menu:{img:'old_0658',cap:'Меню',b:['Сначала то, что вы часто заказываете, потом — от стандартных напитков к авторским','Фильтры: горячие, холодные, кофе, чай, детское','Три карточки в ряд: больше напитков на экране, напиток крупно, без подставок','Цена сразу со скидкой гостя']},
   cart:{img:'old_0661',cap:'Корзина',b:['Оплата в приложении вместо «Сгенерировать QR»','Видно, сколько сэкономила и сколько коинов получу','«Обычно вы берёте ещё» — по самому частому заказу, а не случайная выпечка','Прогресс к уровню — одной спокойной строкой','Закрытую кофейню нельзя выбрать для заказа']},
   order:{img:'old_0661',cap:'Корзина → QR',b:['Вместо QR для кассира — номер заказа и статус','Push, когда заказ готов','Забрать на стойке выдачи без очереди']},
